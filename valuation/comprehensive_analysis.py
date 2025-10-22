@@ -36,9 +36,9 @@ class Config:
 
     # Scoring weights
     WEIGHTS = {
-        'alpha_quality': 0.35,      # Quality of alpha across models
+        'alpha_quality': 0.45,      # Quality of alpha across models
         'trading_feasibility': 0.20, # Trading costs vs alpha
-        'valuation_upside': 0.30,    # Upside based on valuations
+        'valuation_upside': 0.20,    # Upside based on valuations
         'risk_adjusted': 0.15        # Risk-adjusted metrics
     }
 

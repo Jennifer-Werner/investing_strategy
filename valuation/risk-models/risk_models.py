@@ -290,7 +290,7 @@ for ticker in tickers:
                 "Beta_FF3": ff3_beta,
                 "Beta_FF5": ff5_beta,
                 "Info_Ratio_CAPM": capm_ir,
-                "Info_Ratio_FF3": ff3_ir,
+                "o_FF3": ff3_ir,
                 "Info_Ratio_FF5": ff5_ir,
                 "Mean_R2_CAPM": window_df[f"R2_CAPM_{window}M"].mean(),
                 "Mean_R2_FF3": window_df[f"R2_FF3_{window}M"].mean(),
