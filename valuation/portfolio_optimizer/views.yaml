@@ -36,6 +36,27 @@ views:
     confidence: 0.50
 
   # -------- Relative stock views --------
+
+  - name: "VOO 10% abs"
+    pick: { VOO: 1.0 }
+    q: 0.10
+    conf: 0.85
+
+  - name: "IWF 17% abs"
+    pick: { IWF: 1.0 }
+    q: 0.17
+    conf: 0.85
+
+  - name: "QQQ 17% abs"
+    pick: { QQQ: 1.0 }
+    q: 0.17
+    conf: 0.85
+
+  - name: "SMH 25% abs"
+    pick: { SMH: 1.0 }
+    q: 0.25
+    conf: 0.85
+
   - name: "NVDA beats VOO by 5%"
     pick: { NVDA: 1.0, VOO: -1.0 }
     q: 0.05
@@ -72,10 +93,10 @@ views:
     q: 0.13
     conf: 0.55
 
-  - name: "HCA Healthcare (HCA) 9% absolute"
+  - name: "HCA Healthcare (HCA) 15% absolute"
     pick: { HCA: 1.0 }
     q: 0.15
-    conf: 0.60
+    conf: 0.85
 
   # -------- Baskets (relative to VOO) --------
   - name: "Semiconductors +4% over VOO"

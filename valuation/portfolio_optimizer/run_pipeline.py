@@ -502,6 +502,21 @@ def main():
         if "BONDS" in tickers:
             mu_all.loc["BONDS"] = y_over.get("BONDS", 0.0425)
 
+        # --- APPLY μ OVERRIDES FROM CONFIG (if any) ---
+        mu_ovr = cfg.get("mu_overrides") or {}
+        if mu_ovr:
+            # normalize keys to UPPER and coerce to float
+            changed = {}
+            for k, v in mu_ovr.items():
+                ku = str(k).upper()
+                if ku in mu_all.index:
+                    mu_all.loc[ku] = float(v)
+                    changed[ku] = float(v)
+            if changed:
+                print("[info] Applied mu_overrides to:", ", ".join(f"{k}={v:.2%}" for k, v in changed.items()))
+            else:
+                print("[warn] mu_overrides provided but none matched tickers in the optimization universe.")
+
         # Convenience wrapper to try with different relax settings
         def _try_opt(turnover_cap, div_floor_abs, te_target, per_name_cap, use_sector_caps=True, use_sector_targets=True):
             pab = per_asset_bounds.copy()
