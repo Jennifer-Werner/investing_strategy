@@ -1,0 +1,5 @@
+map: {}        # <= not null anymore
+
+green_energy:
+  tickers: []
+  keywords: ["Renewable", "Solar", "Wind", "Hydrogen", "Clean Energy", "EV", "Battery"]

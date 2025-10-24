@@ -5,12 +5,154 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6a9a0844-99e1-4027-871e-1f71072e507c" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/ETF_Metrics_FullList.xlsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/etfs/ETF_Metrics_FullList.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/etfs/ETF_Metrics_FullList.xlsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/valuation/portfolio_optimizer/data/holdings.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/valuation/comprehensive-analysis/output/images/Comprehensive_Dashboard.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/comprehensive-analysis/output/images/Comprehensive_Dashboard.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/valuation/comprehensive-analysis/output/sheets/Comprehensive_Valuation_Report_Normalized.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/comprehensive-analysis/output/sheets/Comprehensive_Valuation_Report_Normalized.xlsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/valuation/comprehensive_analysis.py" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/comprehensive_analysis.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/output/images/Supplementary_Analysis.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/output/images/Supplementary_Analysis.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/output/sheets/Supplementary_Valuation.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/output/sheets/Supplementary_Valuation.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/output/sheets/Valuation_Analysis.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/output/sheets/Valuation_Analysis.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/Model_Performance_Heatmap.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/Model_Performance_Heatmap.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/Model_Ranking.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/Model_Ranking.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/aapl/AAPL_Comparison_36M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/aapl/AAPL_Comparison_36M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/aapl/AAPL_Comparison_52M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/aapl/AAPL_Comparison_52M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/aapl/AAPL_Rolling_Alpha_All_Windows.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/aapl/AAPL_Rolling_Alpha_All_Windows.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/abbv/ABBV_Comparison_36M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/abbv/ABBV_Comparison_36M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/abbv/ABBV_Comparison_52M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/abbv/ABBV_Comparison_52M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/abbv/ABBV_Rolling_Alpha_All_Windows.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/abbv/ABBV_Rolling_Alpha_All_Windows.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/adp/ADP_Comparison_36M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/adp/ADP_Comparison_36M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/adp/ADP_Comparison_52M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/adp/ADP_Comparison_52M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/adp/ADP_Rolling_Alpha_All_Windows.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/adp/ADP_Rolling_Alpha_All_Windows.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/bkng/BKNG_Comparison_36M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/bkng/BKNG_Comparison_36M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/bkng/BKNG_Comparison_52M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/bkng/BKNG_Comparison_52M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/bkng/BKNG_Rolling_Alpha_All_Windows.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/bkng/BKNG_Rolling_Alpha_All_Windows.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/cabo/CABO_Comparison_36M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/cabo/CABO_Comparison_36M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/cabo/CABO_Comparison_52M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/cabo/CABO_Comparison_52M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/cabo/CABO_Rolling_Alpha_All_Windows.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/cabo/CABO_Rolling_Alpha_All_Windows.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/che/CHE_Comparison_36M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/che/CHE_Comparison_36M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/che/CHE_Comparison_52M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/che/CHE_Comparison_52M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/che/CHE_Rolling_Alpha_All_Windows.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/che/CHE_Rolling_Alpha_All_Windows.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/cl/CL_Comparison_36M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/cl/CL_Comparison_36M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/cl/CL_Comparison_52M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/cl/CL_Comparison_52M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/cl/CL_Rolling_Alpha_All_Windows.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/cl/CL_Rolling_Alpha_All_Windows.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/clx/CLX_Comparison_36M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/clx/CLX_Comparison_36M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/clx/CLX_Comparison_52M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/clx/CLX_Comparison_52M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/clx/CLX_Rolling_Alpha_All_Windows.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/clx/CLX_Rolling_Alpha_All_Windows.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/cnk/CNK_Comparison_36M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/cnk/CNK_Comparison_36M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/cnk/CNK_Comparison_52M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/cnk/CNK_Comparison_52M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/cnk/CNK_Rolling_Alpha_All_Windows.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/cnk/CNK_Rolling_Alpha_All_Windows.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/cor/COR_Comparison_36M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/cor/COR_Comparison_36M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/cor/COR_Comparison_52M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/cor/COR_Comparison_52M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/cor/COR_Rolling_Alpha_All_Windows.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/cor/COR_Rolling_Alpha_All_Windows.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/csl/CSL_Comparison_36M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/csl/CSL_Comparison_36M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/csl/CSL_Comparison_52M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/csl/CSL_Comparison_52M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/csl/CSL_Rolling_Alpha_All_Windows.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/csl/CSL_Rolling_Alpha_All_Windows.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/dpz/DPZ_Comparison_36M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/dpz/DPZ_Comparison_36M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/dpz/DPZ_Comparison_52M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/dpz/DPZ_Comparison_52M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/dpz/DPZ_Rolling_Alpha_All_Windows.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/dpz/DPZ_Rolling_Alpha_All_Windows.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/ea/EA_Comparison_36M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/ea/EA_Comparison_36M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/ea/EA_Comparison_52M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/ea/EA_Comparison_52M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/ea/EA_Rolling_Alpha_All_Windows.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/ea/EA_Rolling_Alpha_All_Windows.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/foxa/FOXA_Comparison_36M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/foxa/FOXA_Comparison_36M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/foxa/FOXA_Comparison_52M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/foxa/FOXA_Comparison_52M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/foxa/FOXA_Rolling_Alpha_All_Windows.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/foxa/FOXA_Rolling_Alpha_All_Windows.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/ghc/GHC_Comparison_36M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/ghc/GHC_Comparison_36M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/ghc/GHC_Comparison_52M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/ghc/GHC_Comparison_52M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/ghc/GHC_Rolling_Alpha_All_Windows.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/ghc/GHC_Rolling_Alpha_All_Windows.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/gww/GWW_Comparison_36M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/gww/GWW_Comparison_36M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/gww/GWW_Comparison_52M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/gww/GWW_Comparison_52M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/gww/GWW_Rolling_Alpha_All_Windows.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/gww/GWW_Rolling_Alpha_All_Windows.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/hca/HCA_Comparison_36M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/hca/HCA_Comparison_36M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/hca/HCA_Comparison_52M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/hca/HCA_Comparison_52M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/hca/HCA_Rolling_Alpha_All_Windows.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/hca/HCA_Rolling_Alpha_All_Windows.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/hd/HD_Comparison_36M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/hd/HD_Comparison_36M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/hd/HD_Comparison_52M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/hd/HD_Comparison_52M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/hd/HD_Rolling_Alpha_All_Windows.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/hd/HD_Rolling_Alpha_All_Windows.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/hrb/HRB_Comparison_36M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/hrb/HRB_Comparison_36M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/hrb/HRB_Comparison_52M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/hrb/HRB_Comparison_52M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/hrb/HRB_Rolling_Alpha_All_Windows.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/hrb/HRB_Rolling_Alpha_All_Windows.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/idcc/IDCC_Comparison_36M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/idcc/IDCC_Comparison_36M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/idcc/IDCC_Comparison_52M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/idcc/IDCC_Comparison_52M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/idcc/IDCC_Rolling_Alpha_All_Windows.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/idcc/IDCC_Rolling_Alpha_All_Windows.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/itw/ITW_Comparison_36M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/itw/ITW_Comparison_36M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/itw/ITW_Comparison_52M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/itw/ITW_Comparison_52M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/itw/ITW_Rolling_Alpha_All_Windows.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/itw/ITW_Rolling_Alpha_All_Windows.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/klac/KLAC_Comparison_36M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/klac/KLAC_Comparison_36M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/klac/KLAC_Comparison_52M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/klac/KLAC_Comparison_52M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/klac/KLAC_Rolling_Alpha_All_Windows.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/klac/KLAC_Rolling_Alpha_All_Windows.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/kmb/KMB_Comparison_36M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/kmb/KMB_Comparison_36M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/kmb/KMB_Comparison_52M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/kmb/KMB_Comparison_52M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/kmb/KMB_Rolling_Alpha_All_Windows.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/kmb/KMB_Rolling_Alpha_All_Windows.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/lii/LII_Comparison_36M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/lii/LII_Comparison_36M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/lii/LII_Comparison_52M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/lii/LII_Comparison_52M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/lii/LII_Rolling_Alpha_All_Windows.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/lii/LII_Rolling_Alpha_All_Windows.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/lly/LLY_Comparison_36M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/lly/LLY_Comparison_36M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/lly/LLY_Comparison_52M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/lly/LLY_Comparison_52M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/lly/LLY_Rolling_Alpha_All_Windows.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/lly/LLY_Rolling_Alpha_All_Windows.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/lrcx/LRCX_Comparison_36M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/lrcx/LRCX_Comparison_36M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/lrcx/LRCX_Comparison_52M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/lrcx/LRCX_Comparison_52M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/lrcx/LRCX_Rolling_Alpha_All_Windows.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/lrcx/LRCX_Rolling_Alpha_All_Windows.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/mpwr/MPWR_Comparison_36M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/mpwr/MPWR_Comparison_36M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/mpwr/MPWR_Comparison_52M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/mpwr/MPWR_Comparison_52M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/mpwr/MPWR_Rolling_Alpha_All_Windows.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/mpwr/MPWR_Rolling_Alpha_All_Windows.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/msi/MSI_Comparison_36M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/msi/MSI_Comparison_36M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/msi/MSI_Comparison_52M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/msi/MSI_Comparison_52M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/msi/MSI_Rolling_Alpha_All_Windows.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/msi/MSI_Rolling_Alpha_All_Windows.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/nvda/NVDA_Comparison_36M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/nvda/NVDA_Comparison_36M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/nvda/NVDA_Comparison_52M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/nvda/NVDA_Comparison_52M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/nvda/NVDA_Rolling_Alpha_All_Windows.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/nvda/NVDA_Rolling_Alpha_All_Windows.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/nxst/NXST_Comparison_36M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/nxst/NXST_Comparison_36M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/nxst/NXST_Comparison_52M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/nxst/NXST_Comparison_52M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/nxst/NXST_Rolling_Alpha_All_Windows.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/nxst/NXST_Rolling_Alpha_All_Windows.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/nyt/NYT_Comparison_36M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/nyt/NYT_Comparison_36M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/nyt/NYT_Comparison_52M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/nyt/NYT_Comparison_52M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/nyt/NYT_Rolling_Alpha_All_Windows.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/nyt/NYT_Rolling_Alpha_All_Windows.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/omc/OMC_Comparison_36M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/omc/OMC_Comparison_36M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/omc/OMC_Comparison_52M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/omc/OMC_Comparison_52M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/omc/OMC_Rolling_Alpha_All_Windows.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/omc/OMC_Rolling_Alpha_All_Windows.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/ph/PH_Comparison_36M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/ph/PH_Comparison_36M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/ph/PH_Comparison_52M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/ph/PH_Comparison_52M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/ph/PH_Rolling_Alpha_All_Windows.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/ph/PH_Rolling_Alpha_All_Windows.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/powl/POWL_Comparison_36M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/powl/POWL_Comparison_36M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/powl/POWL_Comparison_52M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/powl/POWL_Comparison_52M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/powl/POWL_Rolling_Alpha_All_Windows.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/powl/POWL_Rolling_Alpha_All_Windows.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/regn/REGN_Comparison_36M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/regn/REGN_Comparison_36M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/regn/REGN_Comparison_52M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/regn/REGN_Comparison_52M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/regn/REGN_Rolling_Alpha_All_Windows.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/regn/REGN_Rolling_Alpha_All_Windows.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/uri/URI_Comparison_36M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/uri/URI_Comparison_36M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/uri/URI_Comparison_52M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/uri/URI_Comparison_52M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/uri/URI_Rolling_Alpha_All_Windows.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/uri/URI_Rolling_Alpha_All_Windows.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/vrsk/VRSK_Comparison_36M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/vrsk/VRSK_Comparison_36M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/vrsk/VRSK_Comparison_52M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/vrsk/VRSK_Comparison_52M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/vrsk/VRSK_Rolling_Alpha_All_Windows.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/vrsk/VRSK_Rolling_Alpha_All_Windows.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/vst/VST_Comparison_36M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/vst/VST_Comparison_36M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/vst/VST_Comparison_52M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/vst/VST_Comparison_52M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/vst/VST_Rolling_Alpha_All_Windows.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/vst/VST_Rolling_Alpha_All_Windows.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/wmg/WMG_Comparison_36M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/wmg/WMG_Comparison_36M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/wmg/WMG_Comparison_52M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/wmg/WMG_Comparison_52M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/wmg/WMG_Rolling_Alpha_All_Windows.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/wmg/WMG_Rolling_Alpha_All_Windows.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/wsm/WSM_Comparison_36M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/wsm/WSM_Comparison_36M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/wsm/WSM_Comparison_52M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/wsm/WSM_Comparison_52M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/wsm/WSM_Rolling_Alpha_All_Windows.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/wsm/WSM_Rolling_Alpha_All_Windows.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/wso/WSO_Comparison_36M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/wso/WSO_Comparison_36M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/wso/WSO_Comparison_52M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/wso/WSO_Comparison_52M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/wso/WSO_Rolling_Alpha_All_Windows.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/wso/WSO_Rolling_Alpha_All_Windows.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/wst/WST_Comparison_36M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/wst/WST_Comparison_36M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/wst/WST_Comparison_52M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/wst/WST_Comparison_52M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/wst/WST_Rolling_Alpha_All_Windows.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/wst/WST_Rolling_Alpha_All_Windows.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/wts/WTS_Comparison_36M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/wts/WTS_Comparison_36M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/wts/WTS_Comparison_52M.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/wts/WTS_Comparison_52M.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/images/wts/WTS_Rolling_Alpha_All_Windows.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/images/wts/WTS_Rolling_Alpha_All_Windows.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/sheets/Model_Comparison_Report.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/sheets/Model_Comparison_Report.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/risk-models/output/sheets/Risk_Model_Output.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/risk-models/output/sheets/Risk_Model_Output.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/valuation/valuation_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/valuation/valuation_model.py" afterDir="false" />
     </list>
+    <list id="e47ba2e3-2fee-400f-a637-22c41a4a8523" name="fixed-outputs-2" comment="" />
+    <list id="e0730e18-5657-4513-be23-94c0784ac77b" name="input-changes" comment="" />
+    <list id="45f26a4b-0994-4f41-8e05-91db79877a44" name="output-fixes" comment="" />
+    <list id="12d85632-e029-4438-b1fa-2052da0c30ef" name="valuation-fixes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -37,26 +179,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "/Users/kuroi_usagi/PycharmProjects/trading",
-    "settings.editor.selected.configurable": "preferences.lookFeel"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/kuroi_usagi/PycharmProjects/trading&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/valuation/comprehensive-analysis/output/images" />
       <recent name="$PROJECT_DIR$" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/valuation/portfolio_optimizer" />
       <recent name="$PROJECT_DIR$/etfs" />
       <recent name="$PROJECT_DIR$/valuation/risk-models/" />
       <recent name="$PROJECT_DIR$/valuation/output/images/app" />
       <recent name="$PROJECT_DIR$/valuation/output/sheets/" />
-      <recent name="$PROJECT_DIR$/valuation/output/images/" />
     </key>
   </component>
   <component name="RunManager" selected="Python.comprehensive_analysis">
@@ -108,6 +250,10 @@
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="6a9a0844-99e1-4027-871e-1f71072e507c" name="Changes" comment="" />
+      <changelist id="12d85632-e029-4438-b1fa-2052da0c30ef" name="valuation-fixes" comment="" />
+      <changelist id="45f26a4b-0994-4f41-8e05-91db79877a44" name="output-fixes" comment="" />
+      <changelist id="e0730e18-5657-4513-be23-94c0784ac77b" name="input-changes" comment="" />
+      <changelist id="e47ba2e3-2fee-400f-a637-22c41a4a8523" name="fixed-outputs-2" comment="" />
       <created>1760701150539</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />

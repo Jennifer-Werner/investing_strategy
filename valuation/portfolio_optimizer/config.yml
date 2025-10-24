@@ -1,0 +1,54 @@
+initial_nav: 500000.0
+benchmark: SPY
+base_currency: USD
+
+# Rebalance schedule
+rebalance: semiannual
+lookback_years: 2
+price_history_years: 5
+
+# Constraints
+min_weight: 0.0
+max_weight: 0.10            # ↑ allow concentration; 0.10 works well with 3% min
+sector_caps:
+  default: 0.40             # optional: a bit looser if you want more punch
+  Information Technology: 0.40
+turnover_cap: 0.25          # slightly looser if you want faster moves
+te_annual_target: 0.06
+te_upper_mult: null
+
+# Dividend floor
+dividend_income_target_abs: 10000.0
+dividend_income_slack: 0.10
+
+# Black–Litterman / shrinkage
+tau: 0.05
+eta_bayes_stein: 0.25
+risk_aversion: 0.05         # ↓ high risk tolerance (was 0.25)
+
+# Sector soft-target pull
+sector_targets:
+  Information Technology: 0.20
+  Healthcare: 0.13
+  Renewable Energy: 0.07
+  Industrials: 0.10
+  Utilities: 0.03
+  Consumer Discretionary: 0.10
+  Communication Services: 0.03
+sector_target_penalty: 0.3  # use your config value (don’t hardcode 50 in code)
+
+# New — active name sizing rules
+min_position_active: 0.03    # ≥3% if invested
+enforce_min_position: true    # turn on the 2-pass re-solve
+
+transaction_cost_bps: 0
+
+factor_model:
+  enabled: false
+  report_only: true
+  enforce_limits: false
+  exposures_csv: data/factor_exposures.csv
+  cov_csv:
+  ff5_excel: /valuation/risk-models/output/sheets/F-F_Research_Data_5_Factors_2x3.xlsx
+  exposure_bounds: {}
+  risk_share_targets: {}

@@ -1,0 +1,74 @@
+ticker,sector
+BONDS,Bonds
+VOO,ETF
+SMH,ETF
+IWF,ETF
+QQQ,ETF
+WMG,Communication Services
+NXST,Communication Services
+NFLX,Communication Services
+CABO,Communication Services
+TTD,Communication Services
+EA,Communication Services
+OMC,Communication Services
+NYT,Communication Services
+FOXA,Communication Services
+CNK,Communication Services
+LYV,Communication Services
+NVR,Consumer Discretionary
+BKNG,Consumer Discretionary
+HRB,Consumer Discretionary
+TSLA,Consumer Discretionary
+HD,Consumer Discretionary
+WSM,Consumer Discretionary
+DPZ,Consumer Discretionary
+CVCO,Consumer Discretionary
+ULTA,Consumer Discretionary
+CHWY,Consumer Discretionary
+DECK,Consumer Discretionary
+LULU,Consumer Discretionary
+CL,Consumer Discretionary
+GHC,Consumer Discretionary
+KMB,Consumer Discretionary
+CLX,Consumer Discretionary
+LOPE,Consumer Discretionary
+HCA,Healthcare
+WAT,Healthcare
+REGN,Healthcare
+IDXX,Healthcare
+COR,Healthcare
+WST,Healthcare
+HALO,Healthcare
+MEDP,Healthcare
+CHE,Healthcare
+ABBV,Healthcare
+LLY,Healthcare
+VRSK,Industrials
+URI,Industrials
+LII,Industrials
+POWL,Industrials
+GWW,Industrials
+WTS,Industrials
+ITW,Industrials
+WSO,Industrials
+PH,Industrials
+CSL,Industrials
+NVDA,Technology
+DDOG,Technology
+KLAC,Technology
+PLTR,Technology
+MANH,Technology
+SNPS,Technology
+MPWR,Technology
+IDCC,Technology
+SONO,Technology
+AAPL,Technology
+FTNT,Technology
+APPF,Technology
+MSI,Technology
+ADP,Technology
+LRCX,Technology
+NTAP,Technology
+VST,Utilities
+CEG,Renewable Energy
+AWR,Utilities

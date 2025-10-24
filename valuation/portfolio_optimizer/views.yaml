@@ -1,0 +1,176 @@
+# Views file consumed by bl_posterior()
+# Supported schemas in your codebase (based on prior runs):
+#  1) Sector absolute tilts:
+#     - type: sector
+#       sector: <sector name>
+#       tilt: <annualized tilt, e.g. 0.03>
+#       confidence: <0..1>
+#
+#  2) Relative views (baskets or pairs): P * μ = q with confidence conf
+#     - name: "Example"
+#       pick: { TICK1: +w1, TICK2: -w2, ... }   # weights sum to 0 for pure relative
+#       q: 0.02
+#       conf: 0.60
+#
+#  3) Absolute asset view (your BL supports this style you used earlier):
+#     - type: absolute
+#       asset: TICKER
+#       mu: 0.04          # set asset's annual μ to 4%
+#       conf: 0.85
+
+views:
+  # -------- Sector (absolute tilts) --------
+  - type: sector
+    sector: Information Technology
+    tilt: 0.05
+    confidence: 0.50
+
+  - type: sector
+    sector: Healthcare
+    tilt: 0.03
+    confidence: 0.50
+
+  - type: sector
+    sector: Green Energy
+    tilt: 0.02
+    confidence: 0.50
+
+  # -------- Relative stock views --------
+  - name: "NVDA beats VOO by 5%"
+    pick: { NVDA: 1.0, VOO: -1.0 }
+    q: 0.05
+    conf: 0.70
+
+  - name: "TSM beats VOO by 3.5%"
+    pick: { TSM: 1.0, VOO: -1.0 }
+    q: 0.035
+    conf: 0.65
+
+  - name: "MSFT beats AAPL by 2%"
+    pick: { MSFT: 1.0, AAPL: -1.0 }
+    q: 0.02
+    conf: 0.60
+
+  - name: "META beats GOOGL by 1%"
+    pick: { META: 1.0, GOOGL: -1.0 }
+    q: 0.01
+    conf: 0.55
+
+  # -------- Absolute single-name views --------
+  - name: "Netflix (NFLX) 15% absolute"
+    pick: { NFLX: 1.0 }
+    q: 0.15
+    conf: 0.60
+
+  - name: "Lululemon (LULU) 14% absolute"
+    pick: { LULU: 1.0 }
+    q: 0.14
+    conf: 0.58
+
+  - name: "Deckers Outdoor (DECK) 13% absolute"
+    pick: { DECK: 1.0 }
+    q: 0.13
+    conf: 0.55
+
+  - name: "HCA Healthcare (HCA) 9% absolute"
+    pick: { HCA: 1.0 }
+    q: 0.15
+    conf: 0.60
+
+  # -------- Baskets (relative to VOO) --------
+  - name: "Semiconductors +4% over VOO"
+    pick: { NVDA: 0.3, AMD: 0.2, AVGO: 0.2, TSM: 0.3, VOO: -1.0 }
+    q: 0.04
+    conf: 0.65
+
+  - name: "AI Infrastructure (NVDA, SMCI) +5% over VOO"
+    pick: { NVDA: 0.6, SMCI: 0.4, VOO: -1.0 }
+    q: 0.05
+    conf: 0.65
+
+  - name: "Premium Apparel Basket beats VOO by 2%"
+    pick: { LULU: 0.4, DECK: 0.4, NKE: 0.2, VOO: -1.0 }
+    q: 0.02
+    conf: 0.60
+
+  - name: "Healthcare Services +1.5% vs VOO"
+    sector: "Health Care"
+    pick: { HCA: 0.4, UNH: 0.3, ZBH: 0.3, VOO: -1.0 }
+    q: 0.015
+    conf: 0.55
+
+  # -------- Additional sector tilts vs VOO --------
+  - name: "Consumer Discretionary +1% vs VOO"
+    sector: "Consumer Discretionary"
+    against: "VOO"
+    q: 0.01
+    conf: 0.50
+
+  - name: "Clean Energy & Infrastructure +3% vs VOO"
+    sector: "Clean Energy"
+    against: "VOO"
+    q: 0.03
+    conf: 0.65
+
+  - name: "Consumer Staples –0.5% vs VOO (Underweight)"
+    sector: "Consumer Staples"
+    against: "VOO"
+    q: -0.005
+    conf: 0.45
+
+  # -------- Macro/structural tilts --------
+  - name: "Information Technology +5.0% vs VOO"
+    sector: "Information Technology"
+    against: "VOO"
+    q: 0.05
+    conf: 0.70
+
+  - name: "Healthcare +3.0% vs VOO"
+    sector: "Health Care"
+    against: "VOO"
+    q: 0.03
+    conf: 0.65
+
+  - name: "Industrials +1.5% vs VOO"
+    sector: "Industrials"
+    against: "VOO"
+    q: 0.015
+    conf: 0.60
+
+  - name: "Utilities +1.0% vs VOO"
+    sector: "Utilities"
+    against: "VOO"
+    q: 0.01
+    conf: 0.55
+
+  - name: "Communication Services +1.0% vs VOO"
+    sector: "Communication Services"
+    against: "VOO"
+    q: 0.01
+    conf: 0.55
+
+  - name: "Green Energy +2.5% vs VOO"
+    sector: "Clean Energy"
+    against: "VOO"
+    q: 0.025
+    conf: 0.60
+
+  - name: "Traditional Energy –5.0% vs VOO"
+    sector: "Energy"
+    against: "VOO"
+    q: -0.05
+    conf: 0.50
+
+  # -------- Absolute + relative combo for DDOG (conservative) --------
+  # Option A (absolute μ): forces DDOG’s expected return to ~4% annual
+  - name: "DDOG muted growth ~ inflation (absolute)"
+    type: absolute
+    asset: DDOG
+    mu: 0.04
+    conf: 0.85
+
+  # Option B (relative): DDOG underperforms VOO by ~2% (if VOO ~6%, DDOG ≈ 4%)
+  - name: "DDOG underperforms VOO by 2%"
+    pick: { DDOG: 1.0, VOO: -1.0 }
+    q: -0.02
+    conf: 0.85

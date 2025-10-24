@@ -1,0 +1,10 @@
+ticker,quality_score,profitability_score,value_score,composite_score
+AAPL,0.7,0.6,0.3,0.52
+MSFT,0.8,0.7,0.4,0.62
+NVDA,0.5,0.6,0.2,0.43
+XOM,0.4,0.5,0.8,0.56
+JNJ,0.7,0.5,0.6,0.58
+UNH,0.8,0.7,0.5,0.66
+NEE,0.6,0.4,0.3,0.43
+TSLA,0.3,0.2,0.1,0.20
+ENPH,0.4,0.3,0.2,0.30

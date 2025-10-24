@@ -1,0 +1,602 @@
+*** a/valuation_model.py
+--- b/valuation_model.py
+@@
+ import seaborn as sns
+ import os
+ from datetime import datetime
+ import warnings
+ warnings.filterwarnings('ignore')
+
+@@
+ TV_WARN_THRESHOLD = 0.70       # warn if PV(TV) > 70% of EV
+ TV_FADE_TRIGGER = 0.75         # trigger a fade stage if PV(TV) share exceeds 75%
+ FADE_YEARS = 3                 # years to fade growth to terminal
+ SHRINK_TO_YAHOO = False        # keep but OFF by default
+ PER_TICKER_IMAGES = True       # write per-ticker PNGs under output/images/<tickerlower)
+
+ # --- NEW: robustness flags (requested fixes) ---
+ GROWTH_FLOOR = 0.02            # minimum realistic growth floor (≈ inflation)
++MAX_START_GROWTH = 0.25        # clamp initial growth to 25% for sanity
++USE_SALES_TO_CAPITAL = True    # use reinvestment based on Sales-to-Capital for non-REITs
++REIT_MODE = True               # switch to AFFO DCF for REITs
+ PEERS_US_ONLY = True           # restrict comps to US / USD to reduce accounting noise
+ EVA_INCLUDE_GOODWILL = False   # optionally include goodwill in invested capital
+ EVA_INCLUDE_INTANG = False     # optionally include intangibles in invested capital
+
+ DEBUG_YF = True  # turn on to print Yahoo Finance reconciliation per ticker
+@@
+ import math
+ def fmt_money(x):
+     if x is None or (isinstance(x, float) and (math.isnan(x) or math.isinf(x))):
+         return "$-"
+@@
+ def fmt_pct(x):
+     if x is None or (isinstance(x, float) and (math.isnan(x) or math.isinf(x))):
+         return "-%"
+     return f"{100*x:.1f}%"
+
++def fmt_sh(x):
++    try:
++        return f"${float(x):,.2f}"
++    except Exception:
++        return "$-"
++
++def _isfinite(x):
++    try:
++        return np.isfinite(float(x))
++    except Exception:
++        return False
++
++SALES_TO_CAPITAL_BY_SECTOR = {
++    # Sales generated per 1 unit of capital invested (Damodaran-style heuristics)
++    # Higher = needs less reinvestment to grow the same revenue.
++    "Technology": 2.5,
++    "Communication Services": 2.2,
++    "Healthcare": 2.0,
++    "Consumer Cyclical": 1.8,
++    "Consumer Defensive": 1.6,
++    "Industrials": 1.5,
++    "Energy": 1.2,
++    "Utilities": 1.1,
++    "Basic Materials": 1.3,
++    "Financial Services": 2.0,
++    "Real Estate": 1.4,
++}
++
++def is_reit(info: dict) -> bool:
++    """Detect REITs robustly."""
++    try:
++        industry = (info.get('industry') or '').upper()
++        sector = (info.get('sector') or '').upper()
++        return ('REIT' in industry) or ('REIT' in sector)
++    except Exception:
++        return False
++
+@@
+ def _pv_of_projections(fcf_list, wacc):
+-    return sum(f['fcf'] / _discount_factor(wacc, f['year']) for f in fcf_list)
++    total = 0.0
++    for f in fcf_list:
++        val = f.get('fcf', 0.0)
++        if _isfinite(val):
++            total += float(val) / _discount_factor(wacc, f['year'])
++        else:
++            print(f"     ⚠️  Skipped non-finite FCF in year {f.get('year')}")
++    return total
+@@
+ def _effective_cash_tax(income_stmt):
+@@
+     return TAX_RATE
+@@
+ def _reconcile_price_shares(info: dict, fast: dict):
+@@
+     return price, shares, market_cap, currency, exchange, issues
+@@
+ capm_data = load_capm_data()
+@@
+ def get_cost_of_equity(ticker, capm_df, data):
+@@
+ def calculate_wacc(data, ticker, capm_df=None):
+@@
+-    try:
+-        income_stmt = data['income_stmt']
+-        interest_expense = abs(float(income_stmt.loc['Interest Expense'].iloc[0])) if 'Interest Expense' in income_stmt.index else 0.0
+-        raw_rd = (interest_expense / total_debt) if total_debt > 0 else 0.05
+-        cost_of_debt = float(np.clip(raw_rd, 0.02, 0.15))
+-    except Exception:
+-        cost_of_debt = 0.05
++    try:
++        income_stmt = data['income_stmt']
++        interest_expense = float(abs(income_stmt.loc['Interest Expense'].iloc[0])) if 'Interest Expense' in income_stmt.index else np.nan
++        if not _isfinite(interest_expense) or total_debt <= 0:
++            raw_rd = 0.06  # safe default
++        else:
++            raw_rd = interest_expense / max(total_debt, 1e-9)
++        cost_of_debt = float(np.clip(raw_rd, 0.02, 0.15))
++    except Exception:
++        cost_of_debt = 0.06
+
+@@
+     return {
+         'wacc': wacc,
+         'cost_of_equity': cost_of_equity,
+         'cost_of_debt': cost_of_debt,
+         'beta': beta,
+@@
+         'enterprise_value': enterprise_value
+     }
+
+-
+-
+-def project_financials(data, horizon=5):
++def project_financials(data, horizon=5):
+     """Project FCFF with ΔNWC ratio and margin/growth fade"""
+     income_stmt = data['income_stmt']
+     balance_sheet = data['balance_sheet']
+     cash_flow = data['cash_flow']
++    info = data.get('info', {})
++    # REIT branch
++    if REIT_MODE and is_reit(info):
++        return _project_reit_affo(data, horizon)
+     try:
+         rev = income_stmt.loc['Total Revenue'].astype(float).values[:3]
+@@
+-        hist_growth = [(rev[i] - rev[i+1]) / rev[i+1] for i in range(len(rev)-1) if rev[i+1] > 0]
+-        revenue_growth = float(np.nanmedian(hist_growth)) if hist_growth else 0.03
++        hist_growth = [(rev[i] - rev[i+1]) / rev[i+1] for i in range(len(rev)-1) if rev[i+1] > 0]
++        raw_growth = float(np.nanmedian(hist_growth)) if hist_growth else 0.03
++        # Clamp the starting growth to avoid NVDA-style blow-ups
++        revenue_growth = float(np.clip(raw_growth, GROWTH_FLOOR, MAX_START_GROWTH))
+         ebit_margin = float(np.nanmedian(ebit / rev))
+         capex_to_rev = float(np.nanmedian(capex / rev))
+         da_to_rev = float(np.nanmedian(da / rev))
+         nwc_ratio = _compute_nwc_ratio(balance_sheet, income_stmt)
+
+         target_margin = np.clip(ebit_margin, 0.05, 0.35)
+-        margin_fade = 0.20
+-        growth_decay = 0.85
++        margin_fade = 0.20
++        # If growth starts high, fade harder to terminal over FADE_YEARS
++        fade_years = max(FADE_YEARS, 3 if revenue_growth <= 0.20 else 6)
+
+         last_rev = rev[0]
+         last_margin = ebit_margin
+         projections = []
+         # Historical FCF sanity signal
+         hist_fcf_positive = _historical_fcf_positive(cash_flow)
+
++        # Sales-to-Capital reinvestment (reduces FCF for high growth)
++        s2c = SALES_TO_CAPITAL_BY_SECTOR.get(info.get('sector', ''), 1.7)
++        use_s2c = bool(USE_SALES_TO_CAPITAL)
++
+         for t in range(1, horizon + 1):
+-            # Apply growth floor to avoid unrealistic decays
+-            g = max(revenue_growth * (growth_decay ** (t - 1)), max(GROWTH_FLOOR, TERMINAL_GROWTH))
++            # Linear fade to terminal over 'fade_years'
++            if t <= fade_years:
++                g = TERMINAL_GROWTH + (revenue_growth - TERMINAL_GROWTH) * (1 - (t - 1) / max(fade_years, 1))
++            else:
++                g = TERMINAL_GROWTH
++            g = max(g, GROWTH_FLOOR)
+             next_rev = float(last_rev * (1 + g))
+
+             last_margin = float(last_margin + (target_margin - last_margin) * margin_fade)
+             ebit_t = next_rev * last_margin
+             nopat = ebit_t * (1 - TAX_RATE)
+
+-            da_t = next_rev * da_to_rev
+-            capex_t = next_rev * (0.5 * capex_to_rev + 0.5 * da_to_rev)
+-            d_nwc = (next_rev - last_rev) * nwc_ratio
+-
+-            fcf = float(nopat + da_t - capex_t - d_nwc)
++            if use_s2c:
++                # Reinvestment required to support growth
++                reinvest = max(0.0, (next_rev - last_rev) / max(s2c, 0.5))
++                fcf = float(nopat - reinvest)
++                da_t = next_rev * da_to_rev
++                capex_t = None
++                d_nwc = None
++            else:
++                da_t = next_rev * da_to_rev
++                capex_t = next_rev * (0.5 * capex_to_rev + 0.5 * da_to_rev)
++                d_nwc = (next_rev - last_rev) * nwc_ratio
++                fcf = float(nopat + da_t - capex_t - d_nwc)
++
+             # Guardrail: if historical FCF was positive but year-1 projection flips negative, soften CapEx/NWC.
+             if hist_fcf_positive and t == 1 and fcf < 0 and (not use_s2c):
+                 capex_t = max(da_t, (capex_t or 0) * 0.85)
+                 d_nwc = max(0.0, (d_nwc or 0) * 0.7)
+                 fcf = float(nopat + da_t - (capex_t or 0) - (d_nwc or 0))
+
+             projections.append({
+                 'year': t,
+                 'revenue': next_rev,
+                 'ebit': ebit_t,
+                 'nopat': nopat,
+                 'depreciation': da_t,
+                 'capex': capex_t,
+                 'nwc_change': d_nwc,
+                 'fcf': fcf
+             })
+             last_rev = next_rev
+
+         return {
+             'projections': projections,
+-            'historical_revenue_growth': revenue_growth,
++            'historical_revenue_growth': revenue_growth,  # already clamped
+             'ebit_margin': ebit_margin,
+             'latest_revenue': rev[0],
+             'latest_ebit': ebit[0],
++            'reinvestment_model': 'Sales-to-Capital' if use_s2c else 'Capex+ΔNWC',
++            's2c': s2c if use_s2c else None,
+         }
+     except Exception as e:
+         print(f"  ⚠️ Projection error: {e}")
+         return None
+@@
+-def calculate_dcf(data, projections, wacc_data):
++def calculate_dcf(data, projections, wacc_data):
+     """DCF with mid-year convention, guardrails, and terminal fade if TV dominates"""
+     if projections is None:
+         return None
+     wacc = wacc_data['wacc']
+     fcf_proj = projections['projections']
++    info = data.get('info', {})
++    # REIT branch: AFFO to equity discounted at cost of equity
++    if REIT_MODE and is_reit(info) and any('affo' in p for p in fcf_proj):
++        re = wacc_data.get('cost_of_equity', wacc)
++        # Compute PV of AFFO stream
++        pv_affo = 0.0
++        for f in fcf_proj:
++            val = f.get('affo', f.get('fcf', 0.0))
++            if _isfinite(val):
++                pv_affo += float(val) / _discount_factor(re, f['year'])
++        last = fcf_proj[-1].get('affo', fcf_proj[-1].get('fcf', 0.0))
++        g = TERMINAL_GROWTH
++        if re <= g:
++            re = g + 0.01
++        tv = (last * (1 + g)) / (re - g)
++        pv_tv = tv / _discount_factor(re, len(fcf_proj))
++        eq_value = pv_affo + pv_tv
++        fv_ps = eq_value / max(data.get('shares_outstanding', 0.0), 1e-9)
++        ev = np.nan
++        tv_share = pv_tv / (pv_affo + pv_tv) if (pv_affo + pv_tv) > 0 else np.nan
++        return {
++            'pv_fcf': pv_affo,
++            'terminal_value': tv,
++            'pv_terminal_value': pv_tv,
++            'enterprise_value': ev,
++            'equity_value': eq_value,
++            'fair_value_per_share': fv_ps,
++            'tv_percentage': float(tv_share * 100) if _isfinite(tv_share) else np.nan,
++            'current_price': data['current_price'],
++            'basis': 'AFFO (Equity DCF)'
++        }
+
+     pv_fcf = _pv_of_projections(fcf_proj, wacc)
+@@
+     equity_value = ev - net_debt
+     shares = data['shares_outstanding']
+     fv = equity_value / shares if shares and shares > 0 else 0.0
+
+     return {
+@@
+-        'current_price': data['current_price']
++        'current_price': data['current_price'],
++        'basis': 'FCFF (WACC DCF)'
+     }
+
++def _project_reit_affo(data, horizon=5):
++    """Simple AFFO projection for REITs: discount AFFO at cost of equity."""
++    income_stmt = data['income_stmt']
++    cash_flow = data['cash_flow']
++    # Base AFFO ≈ CFO - maintenance capex (assume 70% of capex as maintenance if unknown)
++    try:
++        cfo0 = float(cash_flow.loc['Total Cash From Operating Activities'].iloc[0])
++    except Exception:
++        cfo0 = np.nan
++    try:
++        capex0 = float(cash_flow.loc['Capital Expenditure'].iloc[0])
++    except Exception:
++        capex0 = 0.0
++    maint = 0.7 * abs(capex0) if _isfinite(capex0) else 0.0
++    base_affo = (cfo0 if _isfinite(cfo0) else 0.0) - maint
++
++    # Derive and clamp growth from revenue
++    try:
++        rev = income_stmt.loc['Total Revenue'].astype(float).values[:3]
++        hist_growth = [(rev[i] - rev[i+1]) / rev[i+1] for i in range(len(rev)-1) if rev[i+1] > 0]
++        raw_g = float(np.nanmedian(hist_growth)) if hist_growth else TERMINAL_GROWTH
++    except Exception:
++        raw_g = TERMINAL_GROWTH
++    g0 = float(np.clip(raw_g, GROWTH_FLOOR, 0.08))
++
++    projections = []
++    affo = max(0.0, base_affo)
++    fade_years = max(FADE_YEARS, 4)
++    for t in range(1, horizon + 1):
++        if t <= fade_years:
++            g = TERMINAL_GROWTH + (g0 - TERMINAL_GROWTH) * (1 - (t - 1) / max(fade_years, 1))
++        else:
++            g = TERMINAL_GROWTH
++        affo = float(affo * (1 + g)) if t > 1 else float(affo * (1 + g0))
++        projections.append({
++            'year': t,
++            'affo': affo,
++            'fcf': affo  # reuse key path
++        })
++    return {
++        'projections': projections,
++        'historical_revenue_growth': g0,
++        'ebit_margin': np.nan,
++        'latest_revenue': income_stmt.loc['Total Revenue'].iloc[0] if 'Total Revenue' in income_stmt.index else np.nan,
++        'latest_ebit': np.nan,
++        'reit': True,
++        'reinvestment_model': 'AFFO'
++    }
+@@
+ for ticker in tickers:
+@@
+     print(f"  → Projecting financials ({DCF_HORIZON} years)...")
+     projections = project_financials(data, DCF_HORIZON)
+     if projections:
+-        print(f"     → Drivers: growth≈{projections['historical_revenue_growth']:.2%}, EBIT margin≈{projections['ebit_margin']:.2%}")
+-        # Quick magnitude sanity check
+-        y1 = projections['projections'][0]['fcf']
+-        yN = projections['projections'][-1]['fcf']
+-        print(f"     → Sanity: last Revenue={fmt_money(projections['latest_revenue'])}, Year1 FCF={fmt_money(y1)}, Year{len(projections['projections'])} FCF={fmt_money(yN)}")
++        growth_used = projections.get('historical_revenue_growth', np.nan)
++        ebit_m = projections.get('ebit_margin', np.nan)
++        model = projections.get('reinvestment_model', 'Capex+ΔNWC')
++        print(f"     → Drivers: growth≈{(growth_used if _isfinite(growth_used) else 0):.2%}, EBIT margin≈{(ebit_m if _isfinite(ebit_m) else 0):.2%}")
++        print(f"     → Reinvestment model: {model}" + (f" (S/C={projections.get('s2c'):.2f})" if projections.get('s2c') else ""))
++        # Quick magnitude sanity check
++        y1 = projections['projections'][0].get('fcf')
++        yN = projections['projections'][-1].get('fcf')
++        print(f"     → Sanity: last Revenue={fmt_money(projections['latest_revenue'])}, Year1 FCF={fmt_money(y1)}, Year{len(projections['projections'])} FCF={fmt_money(yN)}")
+
+     print(f"  → Running DCF analysis...")
+     dcf_result = calculate_dcf(data, projections, wacc_data)
+     if dcf_result:
+         ev_dcf = (dcf_result['pv_fcf'] or 0) + (dcf_result['pv_terminal_value'] or 0)
+         tv_share = (dcf_result['pv_terminal_value'] / ev_dcf) if ev_dcf > 0 else float("nan")
+         print(
+             f"     → PV(FCF)={fmt_money(dcf_result['pv_fcf'])}, "
+             f"PV(TV)={fmt_money(dcf_result['pv_terminal_value'])} — "
+             f"TV share {fmt_pct(tv_share)} of DCF EV"
+         )
+-    # --- SOFT CORRECTION: Margin-based shrink toward Yahoo target if deviation is too large ---
+-    def get_yahoo_target_price(ticker):
++    # --- SOFT CORRECTION: Margin-based shrink toward Yahoo target if deviation is too large ---
++    def get_yahoo_target_price(ticker):
+         """Get Yahoo target price for a ticker (from yfinance)"""
+         try:
+             stock = yf.Ticker(ticker)
+             info = stock.info
+             target = info.get('targetMeanPrice', None)
+             return float(target) if target and target > 0 else None
+         except Exception:
+             return None
+
+     def shrink_towards_target(value, target, threshold=0.5, shrink_factor=0.5):
+@@
+-    if dcf_result:
+-        dcf_fv = dcf_result['fair_value_per_share']
+-        if SHRINK_TO_YAHOO:
+-            yahoo_target = get_yahoo_target_price(ticker)
+-            if yahoo_target:
+-                orig_fv = dcf_fv
+-                dcf_fv = shrink_towards_target(dcf_fv, yahoo_target, threshold=0.3, shrink_factor=0.4)
+-                if dcf_fv != orig_fv:
+-                    dcf_result['fair_value_per_share'] = dcf_fv
+-                    dcf_result["Note_Yahoo_Corrected"] = f"Margin-shrunk toward Yahoo target: ${yahoo_target:.2f}"
+-
+-            # Diagnostics for DCF output (always print when we have a result)
+-            if dcf_result:
+-                print(
+-                    f"     DCF Fair Value: ${dcf_result['fair_value_per_share']:.2f} (TV: {dcf_result['tv_percentage']:.1f}%)")
+-                ymean = data.get('yahoo_target')
+-                if ymean and np.isfinite(ymean) and ymean > 0:
+-                    deviation_pct = (dcf_result['fair_value_per_share'] - ymean) / ymean * 100
+-                    print(
+-                        f"     📊 Yahoo target: ${ymean:.2f} → Model fair value: ${dcf_result['fair_value_per_share']:.2f} → Deviation: {deviation_pct:+.1f}%")
+-                else:
+-                    print("     ⚙️ Yahoo target not available for this ticker.")
+-
+-            # --- Sensitivity --------------------------------------------------------
+-            print("  → Running sensitivity analysis...")
+-            sensitivity = dcf_sensitivity_analysis(data, projections, wacc_data)
+-
+-            # --- Relative Valuation (Comps) ----------------------------------------
+-            print("  → Finding comparable companies...")
+-            peers = get_comparable_companies(ticker, data['info'])
+-            print(f"     Peers: {', '.join(peers) if peers else 'None found'}")
+-
+-            comps_result = None
+-            if peers:
+-                print("  → Calculating relative valuation...")
+-                comps_result = calculate_relative_valuation(data, peers)
+-                if comps_result and np.isfinite(comps_result.get('comps_fair_value', np.nan)):
+-                    print(f"     Comps Fair Value: ${comps_result['comps_fair_value']:.2f}")
+-                    if np.isfinite(comps_result.get('peer_median_pe', np.nan)):
+-                        print(
+-                            f"     P/E: {comps_result.get('target_pe', np.nan):.1f} vs Peers: {comps_result['peer_median_pe']:.1f}")
+-
+-            # --- EVA ----------------------------------------------------------------
+-            print("  → Calculating EVA...")
+-            eva_result = calculate_eva(data, wacc_data)
+-            if eva_result:
+-                eva_b = eva_result['eva'] / 1e9 if np.isfinite(eva_result['eva']) else np.nan
+-                roic_pct = eva_result['roic'] * 100 if np.isfinite(eva_result['roic']) else np.nan
+-                spread_pct = eva_result['spread'] * 100 if np.isfinite(eva_result['spread']) else np.nan
+-                print(f"     EVA: ${eva_b:.2f}B, ROIC: {roic_pct:.2f}%, Spread: {spread_pct:.2f}%")
+-
+-            # --- Margin of Safety & Signal -----------------------------------------
+-            print("  → Calculating Margin of Safety...")
+-            dcf_fv = dcf_result['fair_value_per_share'] if dcf_result else np.nan
+-            comps_fv = comps_result['comps_fair_value'] if comps_result else np.nan
+-            mos_result = calculate_margin_of_safety(dcf_fv, comps_fv, data['current_price'])
+-            print(f"     Blended Fair Value: ${mos_result['blended_fair_value']:.2f}")
+-            print(f"     Margin of Safety: {mos_result['blended_mos']:.1f}%")
+-
+-            mos = mos_result['blended_mos']
+-            if mos > 30:
+-                signal, color = "STRONG BUY", "🟢"
+-            elif mos > 15:
+-                signal, color = "BUY", "🟢"
+-            elif mos > 0:
+-                signal, color = "HOLD", "🟡"
+-            elif mos > -15:
+-                signal, color = "SELL", "🔴"
+-            else:
+-                signal, color = "STRONG SELL", "🔴"
+-            print(f"     {color} Valuation Signal: {signal}")
+-
+-
+-            # --- Per-ticker PNGs ----------------------------------------------------
+-            def __ensure_ticker_image_dir(t: str) -> str:
+-                p = os.path.join("output", "images", t.lower())
+-                os.makedirs(p, exist_ok=True)
+-                return p
+-
+-
+-            def __plot_per_ticker_charts(ticker, data, dcf_result, projections, sensitivity):
++    if dcf_result:
++        dcf_fv = dcf_result['fair_value_per_share']
++        yahoo_target = data.get('yahoo_target') or get_yahoo_target_price(ticker)
++        if SHRINK_TO_YAHOO and yahoo_target:
++            orig_fv = dcf_fv
++            dcf_fv = shrink_towards_target(dcf_fv, yahoo_target, threshold=0.3, shrink_factor=0.4)
++            if dcf_fv != orig_fv:
++                dcf_result['fair_value_per_share'] = dcf_fv
++                dcf_result["Note_Yahoo_Corrected"] = f"Margin-shrunk toward Yahoo target: ${yahoo_target:.2f}"
++
++        # Diagnostics for DCF + explicit Yahoo comparison
++        print(f"     DCF FV/sh: {fmt_sh(dcf_result['fair_value_per_share'])}  (basis: {dcf_result.get('basis','FCFF')}, TV {dcf_result['tv_percentage']:.1f}%)")
++        if yahoo_target and _isfinite(yahoo_target):
++            dev = (dcf_result['fair_value_per_share'] - yahoo_target) / yahoo_target * 100.0
++            print(f"     📊 Yahoo target: {fmt_sh(yahoo_target)} → Δ vs DCF: {dev:+.1f}%")
++        else:
++            print("     ⚙️  Yahoo target not available for this ticker.")
++
++        # --- Sensitivity --------------------------------------------------------
++        print("  → Running sensitivity analysis...")
++        sensitivity = dcf_sensitivity_analysis(data, projections, wacc_data)
++
++        # --- Relative Valuation (Comps) ----------------------------------------
++        print("  → Finding comparable companies...")
++        peers = get_comparable_companies(ticker, data['info'])
++        print(f"     Peers: {', '.join(peers) if peers else 'None found'}")
++
++        comps_result = None
++        if peers:
++            print("  → Calculating relative valuation...")
++            comps_result = calculate_relative_valuation(data, peers)
++            if comps_result and np.isfinite(comps_result.get('comps_fair_value', np.nan)):
++                print(f"     Comps Fair Value: {fmt_sh(comps_result['comps_fair_value'])}")
++                if np.isfinite(comps_result.get('peer_median_pe', np.nan)):
++                    print(f"     P/E: {comps_result.get('target_pe', np.nan):.1f} vs Peers: {comps_result['peer_median_pe']:.1f}")
++
++        # --- EVA ----------------------------------------------------------------
++        print("  → Calculating EVA...")
++        eva_result = calculate_eva(data, wacc_data)
++        if eva_result:
++            eva_b = eva_result['eva'] / 1e9 if np.isfinite(eva_result['eva']) else np.nan
++            roic_pct = eva_result['roic'] * 100 if np.isfinite(eva_result['roic']) else np.nan
++            spread_pct = eva_result['spread'] * 100 if np.isfinite(eva_result['spread']) else np.nan
++            print(f"     EVA: ${eva_b:.2f}B, ROIC: {roic_pct:.2f}%, Spread: {spread_pct:.2f}%")
++
++        # --- Margin of Safety & Signal -----------------------------------------
++        print("  → Calculating Margin of Safety...")
++        dcf_fv = dcf_result['fair_value_per_share'] if dcf_result else np.nan
++        comps_fv = comps_result['comps_fair_value'] if comps_result else np.nan
++        mos_result = calculate_margin_of_safety(dcf_fv, comps_fv, data['current_price'])
++        print(f"     Blended Fair Value: {fmt_sh(mos_result['blended_fair_value'])}")
++        print(f"     Margin of Safety: {mos_result['blended_mos']:.1f}%")
++
++        mos = mos_result['blended_mos']
++        if mos > 30:
++            signal, color = "STRONG BUY", "🟢"
++        elif mos > 15:
++            signal, color = "BUY", "🟢"
++        elif mos > 0:
++            signal, color = "HOLD", "🟡"
++        elif mos > -15:
++            signal, color = "SELL", "🔴"
++        else:
++            signal, color = "STRONG SELL", "🔴"
++        print(f"     {color} Valuation Signal: {signal}")
++
++        # --- Per-ticker PNGs ----------------------------------------------------
++        def __ensure_ticker_image_dir(t: str) -> str:
++            p = os.path.join("output", "images", t.lower())
++            os.makedirs(p, exist_ok=True)
++            return p
++
++        def __plot_per_ticker_charts(ticker, data, dcf_result, projections, sensitivity):
+                 if dcf_result is None or projections is None:
+                     return
+                 out_dir = __ensure_ticker_image_dir(ticker)
+@@
+-            if PER_TICKER_IMAGES:
+-                __plot_per_ticker_charts(ticker, data, dcf_result, projections, sensitivity)
++        if PER_TICKER_IMAGES:
++            __plot_per_ticker_charts(ticker, data, dcf_result, projections, sensitivity)
+
+-            # --- Collect result row --------------------------------------------------
+-            result = {
+-                'Ticker': ticker,
+-                'Sector': data['info'].get('sector', 'N/A'),
+-                'Current_Price': data['current_price'],
+-                'DCF_Fair_Value': dcf_fv,
+-                'DCF_MoS_%': mos_result['dcf_mos'],
+-                'DCF_TV_%': dcf_result['tv_percentage'] if dcf_result else np.nan,
+-                'Comps_Fair_Value': comps_fv,
+-                'Comps_MoS_%': mos_result['comps_mos'],
+-                'P/E': comps_result['target_pe'] if comps_result else np.nan,
+-                'Peer_Median_P/E': comps_result['peer_median_pe'] if comps_result else np.nan,
+-                'P/E_Z-Score': comps_result['pe_zscore'] if comps_result else np.nan,
+-                'EV/EBITDA': comps_result['target_ev_ebitda'] if comps_result else np.nan,
+-                'EVA_$M': (eva_result['eva'] / 1e6) if eva_result and np.isfinite(eva_result['eva']) else np.nan,
+-                'ROIC_%': (eva_result['roic'] * 100) if eva_result and np.isfinite(eva_result['roic']) else np.nan,
+-                'ROIC-WACC_Spread_%': (eva_result['spread'] * 100) if eva_result and np.isfinite(
+-                    eva_result['spread']) else np.nan,
+-                'WACC_%': wacc_data['wacc'] * 100,
+-                'Beta': wacc_data['beta'],
+-                'Cost_of_Equity_%': wacc_data['cost_of_equity'] * 100,
+-                'Blended_Fair_Value': mos_result['blended_fair_value'],
+-                'Blended_MoS_%': mos_result['blended_mos'],
+-                'Valuation_Signal': signal,
+-                'sensitivity': sensitivity,
+-                'projections': projections
+-            }
+-            all_results.appe<user__selection></user__selection>nd(result)
++        # --- Collect result row --------------------------------------------------
++        result = {
++            'Ticker': ticker,
++            'Sector': data['info'].get('sector', 'N/A'),
++            'Current_Price': data['current_price'],
++            'DCF_Fair_Value': dcf_fv,
++            'DCF_MoS_%': mos_result['dcf_mos'],
++            'DCF_TV_%': dcf_result['tv_percentage'] if dcf_result else np.nan,
++            'Comps_Fair_Value': comps_fv,
++            'Comps_MoS_%': mos_result['comps_mos'],
++            'P/E': comps_result['target_pe'] if comps_result else np.nan,
++            'Peer_Median_P/E': comps_result['peer_median_pe'] if comps_result else np.nan,
++            'P/E_Z-Score': comps_result['pe_zscore'] if comps_result else np.nan,
++            'EV/EBITDA': comps_result['target_ev_ebitda'] if comps_result else np.nan,
++            'EVA_$M': (eva_result['eva'] / 1e6) if eva_result and np.isfinite(eva_result['eva']) else np.nan,
++            'ROIC_%': (eva_result['roic'] * 100) if eva_result and np.isfinite(eva_result['roic']) else np.nan,
++            'ROIC-WACC_Spread_%': (eva_result['spread'] * 100) if eva_result and np.isfinite(eva_result['spread']) else np.nan,
++            'WACC_%': wacc_data['wacc'] * 100,
++            'Beta': wacc_data['beta'],
++            'Cost_of_Equity_%': wacc_data['cost_of_equity'] * 100,
++            'Blended_Fair_Value': mos_result['blended_fair_value'],
++            'Blended_MoS_%': mos_result['blended_mos'],
++            'Valuation_Signal': signal,
++            'DCF_Basis': dcf_result.get('basis', 'FCFF'),
++            'Yahoo_Target': yahoo_target if _isfinite(yahoo_target) else np.nan,
++            'sensitivity': sensitivity,
++            'projections': projections
++        }
++        all_results.append(result)
