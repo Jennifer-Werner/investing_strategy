@@ -19,179 +19,555 @@
 #       conf: 0.85
 
 views:
-  # -------- Sector (absolute tilts) --------
-  - type: sector
-    sector: Information Technology
-    tilt: 0.05
-    confidence: 0.50
+    # ===========================
+    # Baseline Index Expected Returns (Absolute Views)
+    # ===========================
+    - type: absolute
+      asset: VOO
+      mu: 0.10
+      conf: 0.85
+      # S&P 500 broad market expected ~10% annual return (base case)
 
-  - type: sector
-    sector: Healthcare
-    tilt: 0.03
-    confidence: 0.50
+    - type: absolute
+      asset: IWF
+      mu: 0.17
+      conf: 0.85
+      # Russell 1000 Growth index (IWF) – higher return assumption due to growth tilt
 
-  - type: sector
-    sector: Green Energy
-    tilt: 0.02
-    confidence: 0.50
+    - type: absolute
+      asset: QQQ
+      mu: 0.17
+      conf: 0.85
+      # Nasdaq-100 (QQQ) – strong tech/growth exposure driving ~17% expected return
 
-  # -------- Relative stock views --------
+    - type: absolute
+      asset: SMH
+      mu: 0.25
+      conf: 0.85
+      # Semiconductor ETF (SMH) – very high expected return (AI/hardware cycle tailwinds)
 
-  - name: "VOO 10% abs"
-    pick: { VOO: 1.0 }
-    q: 0.10
-    conf: 0.85
+    # ===========================
+    # Sector Tilt Views (Over/Underweights vs Benchmark)
+    # ===========================
+    - type: sector
+      sector: Information Technology
+      tilt: 0.04
+      confidence: 0.85
+      # overweight tech – main growth driver with AI and cloud tailwinds
 
-  - name: "IWF 17% abs"
-    pick: { IWF: 1.0 }
-    q: 0.17
-    conf: 0.85
+    - type: sector
+      sector: Health Care
+      tilt: 0.025
+      confidence: 0.75
+      # modest overweight – secular demand (aging demographics) & innovation
 
-  - name: "QQQ 17% abs"
-    pick: { QQQ: 1.0 }
-    q: 0.17
-    conf: 0.85
+    - type: sector
+      sector: Industrials
+      tilt: 0.02
+      confidence: 0.70
+      # slight overweight – driven by defense contracts and infrastructure spend
 
-  - name: "SMH 25% abs"
-    pick: { SMH: 1.0 }
-    q: 0.25
-    conf: 0.85
+    - type: sector
+      sector: Communication Services
+      tilt: 0.015
+      confidence: 0.60
+      # slight overweight – digital infrastructure and media growth
 
-  - name: "NVDA beats VOO by 5%"
-    pick: { NVDA: 1.0, VOO: -1.0 }
-    q: 0.05
-    conf: 0.70
+    - type: sector
+      sector: Consumer Discretionary      # canonical name
+      tilt: 0.03
+      confidence: 0.80
 
-  - name: "TSM beats VOO by 3.5%"
-    pick: { TSM: 1.0, VOO: -1.0 }
-    q: 0.035
-    conf: 0.65
+  # If you want Staples, either add a canon mapping + targets everywhere, or do asset-level views instead.
+  # If you DON'T add "Consumer Staples" to your canon, comment this out or convert to per-asset absolute views:
+  # - type: sector
+  #   sector: Consumer Staples
+  #   tilt: 0.02
+  #   confidence: 0.75
 
-  - name: "MSFT beats AAPL by 2%"
-    pick: { MSFT: 1.0, AAPL: -1.0 }
-    q: 0.02
-    conf: 0.60
+    - type: sector
+      sector: Renewable Energy
+      tilt: 0.035
+      confidence: 0.80
+      # overweight clean energy – aligned with ESG values and secular energy transition
 
-  - name: "META beats GOOGL by 1%"
-    pick: { META: 1.0, GOOGL: -1.0 }
-    q: 0.01
-    conf: 0.55
+    - type: sector
+      sector: Utilities
+      tilt: 0.02  # was 0.00 (neutral); set what you actually want
+      confidence: 0.80
 
-  # -------- Absolute single-name views --------
-  - name: "Netflix (NFLX) 15% absolute"
-    pick: { NFLX: 1.0 }
-    q: 0.15
-    conf: 0.60
+    - type: sector
+      sector: Energy
+      tilt: -0.05
+      confidence: 0.50
+      # underweight fossil fuels – secular headwinds and ESG concerns (prefer renewables)
 
-  - name: "Lululemon (LULU) 14% absolute"
-    pick: { LULU: 1.0 }
-    q: 0.14
-    conf: 0.58
+    # ===========================
+    # Absolute Asset Views (High-Conviction Overweights)
+    # ===========================
 
-  - name: "Deckers Outdoor (DECK) 13% absolute"
-    pick: { DECK: 1.0 }
-    q: 0.13
-    conf: 0.55
+    # --- Information Technology & Software (Including Fintech) ---
+    - type: absolute
+      asset: MSFT
+      mu: 0.142
+      conf: 0.95
+      # Microsoft — dominant cloud & AI leader, wide moat (ESG AAA rating)
 
-  - name: "HCA Healthcare (HCA) 15% absolute"
-    pick: { HCA: 1.0 }
-    q: 0.15
-    conf: 0.85
+    - type: absolute
+      asset: NVDA
+      mu: 0.162
+      conf: 0.90
+      # NVIDIA — AI GPU leader with best-in-class technology; critical to AI infrastructure (hypergrowth tailwinds, ESG-aligned)
 
-  # -------- Baskets (relative to VOO) --------
-  - name: "Semiconductors +4% over VOO"
-    pick: { NVDA: 0.3, AMD: 0.2, AVGO: 0.2, TSM: 0.3, VOO: -1.0 }
-    q: 0.04
-    conf: 0.65
+    - type: absolute
+      asset: DDOG
+      mu: 0.145
+      conf: 0.82
+      # Datadog — observability leader in cloud infrastructure SaaS; high growth, moderate ESG risk
 
-  - name: "AI Infrastructure (NVDA, SMCI) +5% over VOO"
-    pick: { NVDA: 0.6, SMCI: 0.4, VOO: -1.0 }
-    q: 0.05
-    conf: 0.65
+    - type: absolute
+      asset: MANH
+      mu: 0.14
+      conf: 0.80
+      # Manhattan Associates — supply chain software leader (transitioning to cloud); high ROIC, low debt, strong R&D investment
 
-  - name: "Premium Apparel Basket beats VOO by 2%"
-    pick: { LULU: 0.4, DECK: 0.4, NKE: 0.2, VOO: -1.0 }
-    q: 0.02
-    conf: 0.60
+    - type: absolute
+      asset: TYL
+      mu: 0.125
+      conf: 0.82
+      # Tyler Technologies — government SaaS leader (govtech); clean ESG profile and low controversy
 
-  - name: "Healthcare Services +1.5% vs VOO"
-    sector: "Health Care"
-    pick: { HCA: 0.4, UNH: 0.3, ZBH: 0.3, VOO: -1.0 }
-    q: 0.015
-    conf: 0.55
+    - type: absolute
+      asset: FICO
+      mu: 0.12
+      conf: 0.80
+      # Fair Isaac (FICO) — dominant credit scoring & analytics, high margins and subscription model
 
-  # -------- Additional sector tilts vs VOO --------
-  - name: "Consumer Discretionary +1% vs VOO"
-    sector: "Consumer Discretionary"
-    against: "VOO"
-    q: 0.01
-    conf: 0.50
+    - type: absolute
+      asset: FI
+      mu: 0.122
+      conf: 0.78
+      # Fiserv — fintech infrastructure provider (payments and core banking IT); improving ESG and steady growth
 
-  - name: "Clean Energy & Infrastructure +3% vs VOO"
-    sector: "Clean Energy"
-    against: "VOO"
-    q: 0.03
-    conf: 0.65
+    - type: absolute
+      asset: PAYC
+      mu: 0.13
+      conf: 0.75
+      # Paycom — HR/payroll SaaS with strong growth and high recurring margins, taking share from legacy providers
 
-  - name: "Consumer Staples –0.5% vs VOO (Underweight)"
-    sector: "Consumer Staples"
-    against: "VOO"
-    q: -0.005
-    conf: 0.45
+    - type: absolute
+      asset: APPF
+      mu: 0.12
+      conf: 0.65
+      # AppFolio — niche cloud software for property management; smaller cap with growth runway (moderate conviction)
 
-  # -------- Macro/structural tilts --------
-  - name: "Information Technology +5.0% vs VOO"
-    sector: "Information Technology"
-    against: "VOO"
-    q: 0.05
-    conf: 0.70
+    # --- Semiconductors & EDA Software ---
+    - type: absolute
+      asset: MPWR
+      mu: 0.13
+      conf: 0.80
+      # Monolithic Power — fabless analog semiconductor, strong financials and ESG policy (high valuation but strategic NVDA partner)
 
-  - name: "Healthcare +3.0% vs VOO"
-    sector: "Health Care"
-    against: "VOO"
-    q: 0.03
-    conf: 0.65
+    - type: absolute
+      asset: KLAC
+      mu: 0.13
+      conf: 0.75
+      # KLA Corp — leading semiconductor equipment maker (~50% market share); strong ROIC and niche dominance (lower tariff exposure than peers)
 
-  - name: "Industrials +1.5% vs VOO"
-    sector: "Industrials"
-    against: "VOO"
-    q: 0.015
-    conf: 0.60
+    - type: absolute
+      asset: LSCC
+      mu: 0.14
+      conf: 0.75
+      # Lattice Semiconductor — leader in low-power FPGAs for edge AI; high growth potential in IoT/edge computing
 
-  - name: "Utilities +1.0% vs VOO"
-    sector: "Utilities"
-    against: "VOO"
-    q: 0.01
-    conf: 0.55
+    - type: absolute
+      asset: CDNS
+      mu: 0.13
+      conf: 0.80
+      # Cadence Design Systems — duopoly in chip design software (EDA); stable growth from semiconductor R&D demand
 
-  - name: "Communication Services +1.0% vs VOO"
-    sector: "Communication Services"
-    against: "VOO"
-    q: 0.01
-    conf: 0.55
+    # --- Communication Services & Digital Media ---
+    - type: absolute
+      asset: NXST
+      mu: 0.065
+      conf: 0.85
+      # Nexstar Media — undervalued local media leader with strong moat; clean balance sheet and ESG leadership in media
 
-  - name: "Green Energy +2.5% vs VOO"
-    sector: "Clean Energy"
-    against: "VOO"
-    q: 0.025
-    conf: 0.60
+    - type: absolute
+      asset: TTD
+      mu: 0.055
+      conf: 0.75
+      # Trade Desk — digital advertising platform leader; high-margin SaaS model, solid growth (some ESG risk but strong quality)
 
-  - name: "Traditional Energy –5.0% vs VOO"
-    sector: "Energy"
-    against: "VOO"
-    q: -0.05
-    conf: 0.50
+    - type: absolute
+      asset: NFLX
+      mu: 0.035
+      conf: 0.65
+      # Netflix — solid streaming business but near fair value; moderate growth ahead (medium conviction due to competition & governance concerns)
 
-  # -------- Absolute + relative combo for DDOG (conservative) --------
-  # Option A (absolute μ): forces DDOG’s expected return to ~4% annual
-  - name: "DDOG muted growth ~ inflation (absolute)"
-    type: absolute
-    asset: DDOG
-    mu: 0.04
-    conf: 0.85
+    # --- Industrials & Infrastructure ---
+    - type: absolute
+      asset: GWW
+      mu: 0.13
+      conf: 0.85
+      # W.W. Grainger — industrial distribution leader with high service moat; consistent execution and strong pricing power
 
-  # Option B (relative): DDOG underperforms VOO by ~2% (if VOO ~6%, DDOG ≈ 4%)
-  - name: "DDOG underperforms VOO by 2%"
-    pick: { DDOG: 1.0, VOO: -1.0 }
-    q: -0.02
-    conf: 0.85
+    - type: absolute
+      asset: URI
+      mu: 0.14
+      conf: 0.80
+      # United Rentals — equipment rental market leader; scale advantages and strong free cash flow generation
+
+    - type: absolute
+      asset: ODFL
+      mu: 0.13
+      conf: 0.82
+      # Old Dominion Freight Line — best-in-class LTL trucking operator; superior margins, tech advantage, consistent growth
+
+    - type: absolute
+      asset: ITW
+      mu: 0.12
+      conf: 0.77
+      # Illinois Tool Works — diversified industrial with strong franchise businesses and high ROIC; steady compounder
+
+    - type: absolute
+      asset: POWL
+      mu: 0.15
+      conf: 0.70
+      # Powell Industries — niche electrical equipment supplier (grid infrastructure); benefiting from power grid investment cycle
+
+    - type: absolute
+      asset: LII
+      mu: 0.12
+      conf: 0.72
+      # Lennox International — HVAC systems leader; strong pricing power and service network (benefits from housing & climate trends)
+
+    - type: absolute
+      asset: WTS
+      mu: 0.13
+      conf: 0.80
+      # Watts Water Technologies — leader in plumbing/HVAC controls with water efficiency focus; high margins and ESG-friendly products
+
+    - type: absolute
+      asset: LMT
+      mu: 0.085
+      conf: 0.60
+      # Lockheed Martin — aerospace & defense prime; moderate growth and dependable cash flows (ESG caveat: defense exposure)
+
+    # --- Consumer Discretionary (Cyclical) ---
+    - type: absolute
+      asset: NVR
+      mu: 0.135
+      conf: 0.90
+      # NVR Inc. — asset-light homebuilder with elite ROIC and consistent ~12%+ EPS growth; strong moat and capital discipline
+
+    - type: absolute
+      asset: LULU
+      mu: 0.13
+      conf: 0.85
+      # Lululemon — premium athletic apparel brand with loyal customer base; direct-to-consumer model drives margins and growth
+
+    - type: absolute
+      asset: DPZ
+      mu: 0.125
+      conf: 0.83
+      # Domino’s Pizza — franchise model with digital moat; high ROIC, stable growth and international expansion runway
+
+    - type: absolute
+      asset: WSM
+      mu: 0.125
+      conf: 0.82
+      # Williams-Sonoma — premium home goods retailer (omni-channel); high ROIC, undervalued relative to strong brand loyalty
+
+    - type: absolute
+      asset: CELH
+      mu: 0.16
+      conf: 0.75
+      # Celsius Holdings — booming energy drink brand (distribution partnership with Pepsi); explosive revenue growth, though valuation is high
+
+    - type: absolute
+      asset: ULTA
+      mu: 0.125
+      conf: 0.80
+      # Ulta Beauty — leading beauty retailer with loyal customer base and omni-channel strategy; healthy margins and consistent growth
+
+    # --- Consumer Staples (Defensive) ---
+    - type: absolute
+      asset: GPC
+      mu: 0.12
+      conf: 0.80
+      # Genuine Parts Co. — auto-parts distributor with niche moat; recession-resistant demand and operational excellence
+
+    - type: absolute
+      asset: POST
+      mu: 0.115
+      conf: 0.78
+      # Post Holdings — diversified food brands (cereals, consumer packaged goods); resilient cash flows and capital-efficient growth
+
+    - type: absolute
+      asset: CHD
+      mu: 0.12
+      conf: 0.80
+      # Church & Dwight — household & personal care staple; steady mid-single-digit growth and strong governance (boring compounder)
+
+    - type: absolute
+      asset: COST
+      mu: 0.13
+      conf: 0.85
+      # Costco — retail powerhouse with membership moat; high customer loyalty, price leadership, and operational efficiency
+
+    # --- Healthcare & Life Sciences ---
+    - type: absolute
+      asset: HCA
+      mu: 0.125
+      conf: 0.90
+      # HCA Healthcare — dominant hospital operator with scale advantages; improved post-COVID utilization and resilient margins
+
+    - type: absolute
+      asset: HALO
+      mu: 0.135
+      conf: 0.92
+      # Halozyme — biotech with royalty business model (Enhanze platform); high margins, undervalued, strong cash flow growth
+
+    - type: absolute
+      asset: ABBV
+      mu: 0.12
+      conf: 0.85
+      # AbbVie — pharma leader (post-Humira diversification); solid pipeline, discounted valuation and high dividend quality
+
+    - type: absolute
+      asset: DOCS
+      mu: 0.14
+      conf: 0.88
+      # Doximity — digital healthcare platform for physicians (SaaS); high gross margins, low churn, secular tailwinds in health IT
+
+    - type: absolute
+      asset: DXCM
+      mu: 0.13
+      conf: 0.87
+      # DexCom — leader in continuous glucose monitors (CGM); growing adoption, proven innovation cycle, integration with digital health platforms
+
+    - type: absolute
+      asset: CHE
+      mu: 0.115
+      conf: 0.82
+      # Chemed — hospice and home health operator; strong ROIC, defensive revenue base, and stable growth through cycles
+
+    - type: absolute
+      asset: WAT
+      mu: 0.12
+      conf: 0.86
+      # Waters Corp. — specialist in analytical lab instruments; high switching costs, pricing power, underfollowed steady compounder
+
+    - type: absolute
+      asset: MOH
+      mu: 0.115
+      conf: 0.84
+      # Molina Healthcare — Medicaid-focused insurer with mission-driven model; strong operating leverage and growth in managed care
+
+    - type: absolute
+      asset: REGN
+      mu: 0.125
+      conf: 0.88
+      # Regeneron — biotech/pharma with strong drug portfolio (EYLEA, Dupixent) and pipeline; innovation-driven growth and solid ESG practices
+
+    # ===========================
+    # Relative Views (Expressed as Outperformance vs Benchmark or Peers)
+    # ===========================
+
+    # --- Broad Market Thematic Tilts (Baskets vs VOO) ---
+    - name: "Semiconductors +4% vs VOO"
+      pick: { NVDA: 0.3, AMD: 0.2, AVGO: 0.2, TSM: 0.3, VOO: -1.0 }
+      q: 0.04
+      conf: 0.65
+      # Expect semiconductor basket (NVIDIA, AMD, Broadcom, TSMC) to outperform S&P 500 by 4% annually (AI and chip demand tailwinds)
+
+    - name: "AI Infrastructure (NVDA, SMCI) +5% vs VOO"
+      pick: { NVDA: 0.6, SMCI: 0.4, VOO: -1.0 }
+      q: 0.05
+      conf: 0.65
+      # AI hardware infrastructure plays (NVIDIA, Super Micro Computer) expected to beat broad market by 5%
+
+    - name: "Premium Apparel Basket +2% vs VOO"
+      pick: { LULU: 0.4, DECK: 0.4, NKE: 0.2, VOO: -1.0 }
+      q: 0.02
+      conf: 0.60
+      # High-end apparel/footwear brands (Lululemon, Deckers, Nike) to outperform S&P 500 by 2% (brand strength and pricing power)
+
+    - name: "Healthcare Services +1.5% vs VOO"
+      pick: { HCA: 0.4, UNH: 0.3, ZBH: 0.3, VOO: -1.0 }
+      q: 0.015
+      conf: 0.55
+      # Healthcare facilities & services basket (hospitals, insurer, medtech) expected to beat S&P 500 by 1.5% (post-pandemic recovery, stable demand)
+
+    # --- Relative Views: Mega-Cap Tech Preferences ---
+    - name: "MSFT over AAPL"
+      pick: { MSFT: 1.0, AAPL: -1.0 }
+      q: 0.02
+      conf: 0.60
+      # Microsoft expected to outperform Apple by ~2% annually (stronger growth drivers relative to size)
+
+    - name: "META over GOOGL"
+      pick: { META: 1.0, GOOGL: -1.0 }
+      q: 0.01
+      conf: 0.55
+      # Meta (Facebook) to slightly outperform Alphabet (Google) by ~1% (better execution on new initiatives and cost discipline)
+
+    # --- Relative Views: Technology vs Legacy ---
+    - name: "NVDA over TXN (AI vs mature semis)"
+      pick: { NVDA: 1.0, TXN: -1.0 }
+      q: 0.06
+      conf: 0.75
+      # NVIDIA’s AI-driven growth to outperform Texas Instruments’ mature semiconductor business by ~6%
+
+    - name: "LSCC over TXN (edge AI vs legacy analog)"
+      pick: { LSCC: 1.0, TXN: -1.0 }
+      q: 0.05
+      conf: 0.70
+      # Lattice Semi (edge AI focus) to beat Texas Instruments by ~5% (faster growth vs legacy analog chipmaker)
+
+    - name: "DDOG over ORCL (cloud vs legacy)"
+      pick: { DDOG: 0.5, ORCL: -0.5 }
+      q: 0.05
+      conf: 0.70
+      # Datadog’s cloud-native platform to outperform Oracle’s legacy enterprise software by ~5% annually
+
+    - name: "DDOG over DOCU (high-growth vs stagnant SaaS)"
+      pick: { DDOG: 0.7, DOCU: -0.7 }
+      q: 0.04
+      conf: 0.65
+      # Datadog expected to outperform DocuSign by ~4% (superior growth trajectory vs a more stagnant SaaS peer)
+
+    - name: "CDNS over QCOM (EDA vs commoditized chips)"
+      pick: { CDNS: 0.5, QCOM: -0.5 }
+      q: 0.04
+      conf: 0.60
+      # Cadence (chip design software) to beat Qualcomm (mobile chips) by ~4%, reflecting EDA software growth vs hardware commoditization
+
+    - name: "TYL over HPQ (sustainable SaaS vs legacy tech)"
+      pick: { TYL: 0.5, HPQ: -0.5 }
+      q: 0.04
+      conf: 0.65
+      # Tyler Tech (cloud SaaS) to outperform HP (legacy hardware) by ~4%, highlighting SaaS growth vs traditional tech stagnation
+
+    - name: "FSLR over XOM (renewables vs oil)"
+      pick: { FSLR: 0.6, XOM: -0.4 }
+      q: 0.06
+      conf: 0.75
+      # First Solar expected to outperform ExxonMobil by ~6% as clean energy surges vs traditional oil & gas
+
+    # --- Relative Views: Communication Services ---
+    - name: "NXST over NFLX"
+      pick: { NXST: 1.0, NFLX: -1.0 }
+      q: 0.03
+      conf: 0.80
+      # Nexstar to outperform Netflix by ~3% (undervalued local media vs fully valued streaming giant)
+
+    - name: "TTD over NFLX"
+      pick: { TTD: 1.0, NFLX: -1.0 }
+      q: 0.02
+      conf: 0.70
+      # Trade Desk to outperform Netflix by ~2% (ad-tech high growth vs maturing streaming)
+
+    - name: "NXST over TTD"
+      pick: { NXST: 1.0, TTD: -1.0 }
+      q: 0.01
+      conf: 0.60
+      # Nexstar to slightly outperform Trade Desk (~1%) given stronger valuation upside and lower risk profile
+
+    # --- Relative Views: Industrials ---
+    - name: "URI over HRI"
+      pick: { URI: 1.0, HRI: -1.0 }
+      q: 0.03
+      conf: 0.65
+      # United Rentals expected to beat HERC (HRI) by 3% (scale and efficiency advantage)
+
+    - name: "ODFL over SAIA"
+      pick: { ODFL: 0.5, SAIA: -0.5 }
+      q: 0.02
+      conf: 0.60
+      # Old Dominion to outperform Saia by ~2% (industry-leading margins and network efficiency in LTL freight)
+
+    - name: "GWW over FAST"
+      pick: { GWW: 0.6, FAST: -0.4 }
+      q: 0.025
+      conf: 0.70
+      # Grainger to outperform Fastenal by ~2.5% (broader product line and service strength vs narrower peer)
+
+    - name: "POWL over EMR"
+      pick: { POWL: 1.0, EMR: -1.0 }
+      q: 0.04
+      conf: 0.60
+      # Powell Industries to beat Emerson Electric by ~4% (focused electrical niche growth vs large-cap industrial breadth)
+
+    - name: "WTS over AOS"
+      pick: { WTS: 0.5, AOS: -0.5 }
+      q: 0.02
+      conf: 0.55
+      # Watts Water to outperform A.O. Smith by ~2% (water infrastructure focus with ESG tailwind vs broader appliances business)
+
+    # --- Relative Views: Consumer ---
+    - name: "LULU over CROX"
+      pick: { LULU: 1.0, CROX: -1.0 }
+      q: 0.05
+      conf: 0.70
+      # Lululemon expected to outperform Crocs by ~5% (stronger brand moat and long-term growth vs more fad-driven peer)
+
+    # --- Relative Views: Healthcare & Biotech ---
+    - name: "HALO over SRPT"
+      pick: { HALO: 1.0, SRPT: -1.0 }
+      q: 0.035
+      conf: 0.75
+      # Halozyme (profitable royalty model) to beat Sarepta (pre-profit biotech) by 3.5% – reflects Halo’s cash flows vs SRPT’s high execution risk
+
+    - name: "DOCS over TDOC"
+      pick: { DOCS: 1.0, TDOC: -1.0 }
+      q: 0.04
+      conf: 0.78
+      # Doximity to outperform Teladoc by ~4% (profitable, niche SaaS vs unprofitable, integration-challenged telehealth provider)
+
+    - name: "WAT over TMO"
+      pick: { WAT: 0.6, TMO: -0.6 }
+      q: 0.025
+      conf: 0.70
+      # Waters to beat Thermo Fisher by ~2.5% (focused analytical instruments vs broad conglomerate facing integration risks)
+
+    - name: "DXCM over PODD"
+      pick: { DXCM: 0.7, PODD: -0.7 }
+      q: 0.03
+      conf: 0.72
+      # DexCom to outperform Insulet by ~3% (CGM leader with better reimbursement vs insulin pump niche facing pricing pressures)
+
+    - name: "ABBV over BMY"
+      pick: { ABBV: 0.6, BMY: -0.6 }
+      q: 0.02
+      conf: 0.65
+      # AbbVie to beat Bristol-Myers by ~2% (stronger capital allocation and clearer pipeline vs peer’s higher pipeline uncertainty)
+
+    # ===========================
+    # Healthcare Sub-Sector Tilt Views
+    # ===========================
+    - type: sector
+      sector: Healthcare Information and Technology
+      tilt: 0.025
+      confidence: 0.80
+      # reason: Digitalization of care delivery and scalable SaaS platforms (e.g., Doximity, Veeva); high-margin growth and sticky customer base
+
+    - type: sector
+      sector: Healthcare Products
+      tilt: 0.02
+      confidence: 0.75
+      # reason: Tailwinds from aging demographics and tech adoption in devices/diagnostics (e.g., DexCom, Waters, Idexx); steady demand growth
+
+    - type: sector
+      sector: Drugs (Biotechnology)
+      tilt: -0.015
+      confidence: 0.70
+      # reason: Cautious on biotech – post-2021 excesses, high capital burn and binary risks; prefer selective profitable biotechs (e.g., HALO) over broad exposure
+
+    - type: sector
+      sector: Hospitals/Healthcare Facilities
+      tilt: 0.015
+      confidence: 0.78
+      # reason: Overweight facilities – post-COVID volume rebound, improved payer mix, and pricing resilience (HCA has scale and efficiency advantages)
+

@@ -44,12 +44,32 @@ def _pin_sleeves_exact(w: pd.Series, fixed: dict[str, float]) -> pd.Series:
         w.loc[active] = w.loc[active] * (active_target / s)
     return w
 
-def _normalize_div_yields(div: pd.Series) -> pd.Series:
-    """Ensure dividend yields are decimals (0.042 not 4.2)."""
-    s = pd.to_numeric(div, errors="coerce").fillna(0.0).astype(float)
-    if (s > 1.0).mean() > 0.25 and (s <= 100.0).all():
-        s = s / 100.0
-    return s.clip(lower=0.0, upper=0.30)
+# def _normalize_div_yields(div: pd.Series) -> pd.Series:
+#     """Ensure dividend yields are decimals (0.042 not 4.2)."""
+#     s = pd.to_numeric(div, errors="coerce").fillna(0.0).astype(float)
+#     if (s > 1.0).mean() > 0.25 and (s <= 100.0).all():
+#         s = s / 100.0
+#     return s.clip(lower=0.0, upper=0.30)
+def _normalize_div_yields(div: pd.Series,
+                          hard_cap: float = 0.12,      # 12% global cap
+                          min_valid: float = 0.0) -> pd.Series:
+    """
+    Normalize dividend yields to decimals (e.g., 0.025 = 2.5%).
+    - Convert percents [1..100] -> divide by 100
+    - Treat anything > hard_cap as invalid (set NaN; we'll impute later)
+    - Keep zeros as zeros (some growth names truly have 0)
+    """
+    s = pd.to_numeric(div, errors="coerce").astype(float)
+
+    # If many are in percent form (1..100), convert to decimals
+    percmask = (s > 1.0) & (s <= 100.0)
+    if percmask.mean() > 0.1:  # if ≥10% look like percents, convert those entries
+        s = s.where(~percmask, s / 100.0)
+
+    # Knock out absurd values; we'll impute them later
+    s = s.where((s >= min_valid) & (s <= hard_cap))
+
+    return s
 
 def _achieved_div_dollars(weights: pd.Series, div_yields: pd.Series, nav: float) -> float:
     y = div_yields.reindex(weights.index).fillna(0.0)
@@ -126,7 +146,58 @@ def main():
     args = ap.parse_args()
 
     cfg = load_yaml(args.config)
-    views_cfg = load_yaml(args.views).get('views', [])
+
+    def _normalize_views(vs):
+        out = []
+        for v in (vs or []):
+            v = dict(v)  # copy
+            # unify confidence key
+            if "conf" not in v and "confidence" in v:
+                v["conf"] = v["confidence"]
+            # absolute: accept 'mu' or 'value'
+            if v.get("type") == "absolute":
+                if "value" not in v and "mu" in v:
+                    v["value"] = v["mu"]
+            # sector name canonicalization for views (match your runtime sectors)
+            if v.get("type") == "sector":
+                sec = str(v.get("sector", "")).strip()
+                canon = {
+                    "Information Technology": "Information Technology",
+                    "Technology": "Information Technology",
+                    "Info Tech": "Information Technology",
+                    "Health Care": "Healthcare",
+                    "Healthcare": "Healthcare",
+                    "Communication": "Communication Services",
+                    "Comm Services": "Communication Services",
+                    "Communication Services": "Communication Services",
+                    "Consumer Discretionary": "Consumer Discretionary",
+                    "Consumer Cyclical": "Consumer Discretionary",  # <-- important
+                    "Industrials": "Industrials",
+                    "Utilities": "Utilities",
+                    "Renewable Energy": "Renewable Energy",
+                    "Energy": "Energy",
+                }
+                v["sector"] = canon.get(sec, sec)
+            out.append(v)
+        return out
+
+    views_cfg_raw = load_yaml(args.views).get('views', [])
+    views_cfg = _normalize_views(views_cfg_raw)
+
+    # Canonicalize sector names used in views so BL actually picks them up
+    _sector_canon_views = {
+        "Health Care": "Healthcare",
+        "Consumer Cyclical": "Consumer Discretionary",
+        "Consumer Defensive": "Consumer Discretionary",
+        "Comm Services": "Communication Services",
+        "Communication": "Communication Services",
+    }
+    for v in views_cfg:
+        if isinstance(v, dict) and v.get("type") == "sector":
+            sec = v.get("sector")
+            if isinstance(sec, str):
+                v["sector"] = _sector_canon_views.get(sec, sec)
+
     sectors_cfg = load_yaml(args.sectors) if Path(args.sectors).exists() else {}
     green_energy = (sectors_cfg.get('green_energy') or {})
     sector_map = (sectors_cfg.get('map') or {})
@@ -210,10 +281,45 @@ def main():
     div_raw = fetch_dividend_yields(tickers)
     y_over = {"BONDS": 0.0425}
     y_over.update(cfg.get("dividend_yield_overrides", {}))
-    div = _normalize_div_yields(div_raw).reindex(tickers).fillna(0.0)
+    # was:
+    # div = _normalize_div_yields(div_raw).reindex(tickers).fillna(0.0)
+
+    # fix:
+    div = _normalize_div_yields(div_raw).reindex(tickers)
+    # for k, v in y_over.items():
+    #     if k in div.index:
+    #         div.loc[k] = float(v)
+
+    # 1) Sector-median imputation for invalid/missing values
+    sec_for_impute = sectors.reindex(tickers).fillna("Unknown")
+    # compute medians on valid values only
+    sec_meds = div.groupby(sec_for_impute).transform(lambda x: x.median(skipna=True))
+    div = div.fillna(sec_meds)
+
+    # 2) Fallback for anything still NaN (e.g., sectors with all NaN)
+    fallback_yield = float(cfg.get("dividend_yield_fallback", 0.015))  # 1.5% default
+    div = div.fillna(fallback_yield)
+
+    # 3) Reasonable ETF defaults unless explicitly overridden in config
+    etf_defaults = {"VOO": 0.012, "QQQ": 0.005, "IWF": 0.007, "SMH": 0.012}
+    for k, v in etf_defaults.items():
+        if k in div.index and pd.isna(y_over.get(k, np.nan)):  # only set if not overridden in cfg
+            div.loc[k] = v
+
+    # 4) Apply explicit overrides last (always wins)
     for k, v in y_over.items():
         if k in div.index:
             div.loc[k] = float(v)
+
+    # 5) Final safety cap (keep numbers sane)
+    final_cap = float(cfg.get("dividend_yield_cap", 0.12))
+    div = div.clip(lower=0.0, upper=final_cap)
+
+    # 6) Diagnostics (so you can catch it immediately next time)
+    print("[diag] Dividend yields (decimals) after cleaning:",
+          f"min={div.min():.4f}, p50={div.median():.4f}, p95={div.quantile(0.95):.4f}, max={div.max():.4f}")
+    blend = float((div.reindex(tickers).fillna(0.0) * (pd.Series(1.0, index=tickers) / len(tickers))).sum())
+    print(f"[diag] Example blended yield if equal-weight: ~{blend:.2%}")
 
     # Estimation window
     est_cols = [c for c in tickers if c in prices.columns]
@@ -231,10 +337,25 @@ def main():
 
     # Black–Litterman posterior (exclude synthetic BONDS)
     tickers_ex_bonds = [t for t in tickers if t != "BONDS"]
+
+    ra_bl = cfg.get('risk_aversion_bl', 2.5)
+    ra_opt = cfg.get('risk_aversion_optim', 0.05)
+
     mu_bl, cov_bl = bl_posterior(
-        cov, prices, tickers_ex_bonds, sectors, mkt_w, cfg.get('risk_aversion'), bench,
-        cfg['tau'], mu_bs, views_cfg, green_energy
+        cov, prices, tickers_ex_bonds, sectors, mkt_w,
+        ra_bl, bench, cfg['tau'], mu_bs,
+        views_cfg, green_energy,
+        eta_bayes_stein=cfg.get('eta_bayes_stein', 0.25),
+        omega_scale=cfg.get('omega_scale', 1.0),
     )
+
+    mu_over = (cfg.get("mu_overrides") or {})
+    if mu_over:
+        mu_bl = mu_bl.copy()
+        for k, v in mu_over.items():
+            kk = str(k).upper()
+            if kk in mu_bl.index:
+                mu_bl.loc[kk] = float(v)
 
     # Optimization config
     rc = RunConfig(
@@ -242,7 +363,7 @@ def main():
         min_weight=cfg['min_weight'], max_weight=cfg['max_weight'],
         sector_caps=cfg.get('sector_caps', {}), default_sector_cap=cfg.get('sector_caps', {}).get('default', 0.30),
         turnover_cap=cfg['turnover_cap'], te_annual_target=cfg['te_annual_target'],
-        tau=cfg['tau'], eta_bayes_stein=cfg['eta_bayes_stein'], risk_aversion=cfg.get('risk_aversion'),
+        tau=cfg['tau'], eta_bayes_stein=cfg['eta_bayes_stein'], risk_aversion=ra_opt,
         div_floor_abs=cfg['dividend_income_target_abs'], div_slack=cfg['dividend_income_slack'],
     )
 
@@ -263,6 +384,8 @@ def main():
         else:
             per_asset_bounds[t] = (0.0, rc.max_weight)
 
+
+
     # NVDA >= 3.25% if not a sleeve
     if "NVDA" in tickers and "NVDA" not in fixed_in_universe:
         lb = 0.0325
@@ -271,12 +394,10 @@ def main():
 
     # TE benchmark respecting sleeves
     sum_sleeves_present = sum(fixed_in_universe.values())
-    active_names = [t for t in tickers if t not in fixed_in_universe]
     bench_w = pd.Series(0.0, index=tickers, dtype=float)
-    if active_names:
-        bench_w.loc[active_names] = (1.0 - sum_sleeves_present) / len(active_names)
     for k, v in fixed_in_universe.items():
         bench_w.loc[k] = v
+    # active names benchmark at 0 -> TE won't push equal weight into every active name
 
     # Desired sector totals (absolute) → soft targets + hard caps on the active book
     desired_sector_targets = {
@@ -377,11 +498,14 @@ def main():
         active_budget = max(0.0, 1.0 - sleeves_sum)
 
         # Active universe (no sleeves), sorted by the first-pass weight
+        # Active universe (no sleeves), rank by expected return μ (desc) and skip μ<=0
         active_names = [t for t in tickers if t not in fixed_in_universe]
-        w_active = first_w.reindex(active_names).fillna(0.0).sort_values(ascending=False)
+
+        # Pull μ for actives, drop NaNs and non-positive μ, then sort high → low
+        mu_active = mu_all.reindex(active_names)
+        mu_active = mu_active[mu_active > 0].sort_values(ascending=False)
 
         # Sector capacities (hard caps on LHS for the active book)
-        # We’ll track how much of each sector’s cap we reserve for min_pos allocations.
         sec_cap = defaultdict(lambda: float(default_sector_cap_for_opt))
         for s_name, cap in (sector_caps_for_opt or {}).items():
             sec_cap[s_name] = float(cap)
@@ -391,7 +515,7 @@ def main():
 
         # Explicit floors we must preserve (e.g., NVDA >= 3.25%)
         explicit_floors = {}
-        if "NVDA" in w_active.index and min_pos < 0.0325:
+        if "NVDA" in active_names and min_pos < 0.0325:
             explicit_floors["NVDA"] = 0.0325
 
         # Seed sector usage with explicit floors
@@ -403,7 +527,7 @@ def main():
         selected = set(explicit_floors.keys())
         used_budget = sum(explicit_floors.values())
 
-        for t in w_active.index:
+        for t in mu_active.index:  # iterate in order of highest μ first
             if t in selected:
                 continue
             if used_budget + min_pos > active_budget + 1e-12:
@@ -474,6 +598,7 @@ def main():
                 sector_target_penalty=sector_target_penalty,
                 te_upper_mult=cfg.get("te_upper_mult"),
             )
+
             return w2
         except Exception:
             # Retry once with sector targets disabled (caps still enforced)
@@ -517,6 +642,13 @@ def main():
             else:
                 print("[warn] mu_overrides provided but none matched tickers in the optimization universe.")
 
+        # --- ban non-positive μ from getting any active weight (sleeves still exact) ---
+        for t in mu_all.index:
+            if t in fixed_in_universe:  # keep sleeves pinned
+                continue
+            if float(mu_all.get(t, 0.0)) <= 0.0:
+                per_asset_bounds[t] = (0.0, 0.0)  # freeze out
+
         # Convenience wrapper to try with different relax settings
         def _try_opt(turnover_cap, div_floor_abs, te_target, per_name_cap, use_sector_caps=True, use_sector_targets=True):
             pab = per_asset_bounds.copy()
@@ -529,6 +661,8 @@ def main():
                     pab[t] = (v, v)
                 if "NVDA" in pab and pab["NVDA"][0] is not None:
                     pab["NVDA"] = (pab["NVDA"][0], max(pab["NVDA"][1], pab["NVDA"][0]))
+
+
             return optimize_weights(
                 mu=mu_all, cov=cov, benchmark_w=bench_w, sectors_series=sectors,
                 prev_w=(None if args.ignore_holdings else prev_w),
@@ -588,6 +722,17 @@ def main():
         # Pin sleeves exactly and renormalize active
         w_star = _pin_sleeves_exact(w_star, fixed_in_universe)
 
+        # --- NEW: clip numerical dust and re-scale active only ---
+        EPS = 1e-6  # 0.0001% of NAV
+        w_star = w_star.where(w_star >= EPS, 0.0)
+
+        # Keep sleeves exact; renormalize only the active sleeve to its target
+        active = [t for t in w_star.index if t not in fixed_in_universe]
+        target_active = 1.0 - sum(fixed_in_universe.values())
+        active_sum = float(w_star.loc[active].sum())
+        if active_sum > 0 and target_active > 0:
+            w_star.loc[active] *= (target_active / active_sum)
+
         # Write outputs
         outdir = Path(args.outdir)
         w_star.to_frame('weight').to_csv(outdir / 'weights_latest.csv')
@@ -603,6 +748,26 @@ def main():
             .sort_values(ascending=False)
         )
         sec_df.to_csv(outdir / "sector_breakdown.csv")
+
+        # --- DEBUG: check for negative-μ names that still carry material weight ---
+        df_diag = pd.concat(
+            [w_star.rename('weight'), mu_all.rename('mu')],
+            axis=1
+        ).dropna()
+        df_diag['contrib'] = df_diag['weight'] * df_diag['mu']
+
+        EPS = 1e-6  # ignore numerical dust
+        neg = df_diag[(df_diag['mu'] <= 0) & (df_diag['weight'] > EPS)]
+
+        print("\n[diag] Any negative-μ names with *material* weight? ->", not neg.empty)
+        if not neg.empty:
+            print(neg[['weight', 'mu', 'contrib']]
+                  .sort_values('weight', ascending=False)
+                  .to_string(float_format=lambda x: f"{x:.6f}"))
+        # -------------------------------------------------------------------------
+
+        port_mu = float((w_star * mu_all).sum())
+        print(f"\n[diag] Portfolio expected return (Σ w·μ): {port_mu:.2%}")
 
         # Quick TE check
         Sigma = cov.loc[w_star.index, w_star.index].values
@@ -625,6 +790,7 @@ def main():
 
         print(f"\nApprox TE(annual) ~ {te_annual:.2%}  (target={cfg['te_annual_target']:.2%})")
         inc = _achieved_div_dollars(w_star, div, rc.initial_nav)
+
         print(
             "Dividend $ implied ~ "
             f"{inc:,.0f}  "
@@ -651,6 +817,15 @@ def main():
         eq_w = pd.Series(1.0 / len(tickers), index=tickers)
         eq_weights = weights.copy(); eq_weights.iloc[:] = eq_w.values
         eq_r = portfolio_returns(eq_weights, pr)
+
+        # --- add these caches so report.py can reuse the exact data ---
+        used_prices = prices[[c for c in tickers if c in prices.columns] + [bench]].sort_index()
+        outdir.mkdir(parents=True, exist_ok=True)
+        used_prices.to_parquet(outdir / 'prices_used.parquet')  # full price grid the backtest used
+        port_r.rename('Strategy').to_frame().to_parquet(outdir / 'port_daily_returns.parquet')
+        eq_r.rename('EqualWeight').to_frame().to_parquet(outdir / 'eqw_daily_returns.parquet')
+        # ----------------------------------------------------------------
+
 
         metrics = {
             "ann_return": ann_return(port_r),

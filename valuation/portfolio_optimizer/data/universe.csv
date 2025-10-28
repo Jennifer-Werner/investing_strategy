@@ -4,71 +4,68 @@ VOO,ETF
 SMH,ETF
 IWF,ETF
 QQQ,ETF
-WMG,Communication Services
-NXST,Communication Services
 NFLX,Communication Services
-CABO,Communication Services
 TTD,Communication Services
 EA,Communication Services
-OMC,Communication Services
-NYT,Communication Services
-FOXA,Communication Services
-CNK,Communication Services
 LYV,Communication Services
+OMC,Communication Services
+NXST,Communication Services
+WMG,Communication Services
 NVR,Consumer Discretionary
 BKNG,Consumer Discretionary
-HRB,Consumer Discretionary
 TSLA,Consumer Discretionary
 HD,Consumer Discretionary
-WSM,Consumer Discretionary
 DPZ,Consumer Discretionary
-CVCO,Consumer Discretionary
-ULTA,Consumer Discretionary
-CHWY,Consumer Discretionary
 DECK,Consumer Discretionary
 LULU,Consumer Discretionary
-CL,Consumer Discretionary
-GHC,Consumer Discretionary
-KMB,Consumer Discretionary
-CLX,Consumer Discretionary
-LOPE,Consumer Discretionary
-HCA,Healthcare
-WAT,Healthcare
+WSM,Consumer Discretionary
+CVCO,Consumer Discretionary
+ULTA,Consumer Discretionary
+LLY,Healthcare
 REGN,Healthcare
+HCA,Healthcare
 IDXX,Healthcare
-COR,Healthcare
 WST,Healthcare
+ABBV,Healthcare
 HALO,Healthcare
 MEDP,Healthcare
-CHE,Healthcare
-ABBV,Healthcare
-LLY,Healthcare
-VRSK,Industrials
-URI,Industrials
-LII,Industrials
-POWL,Industrials
+DXCM,Healthcare
+MOH,Healthcare
 GWW,Industrials
-WTS,Industrials
+URI,Industrials
+ODFL,Industrials
+LMT,Industrials
 ITW,Industrials
-WSO,Industrials
 PH,Industrials
+LII,Industrials
 CSL,Industrials
+WTS,Industrials
+POWL,Industrials
 NVDA,Technology
-DDOG,Technology
+MSFT,Technology
+AAPL,Technology
+ADBE,Technology
+NOW,Technology
 KLAC,Technology
-PLTR,Technology
-MANH,Technology
 SNPS,Technology
 MPWR,Technology
-IDCC,Technology
-SONO,Technology
-AAPL,Technology
 FTNT,Technology
-APPF,Technology
-MSI,Technology
+DDOG,Technology
+MANH,Technology
+TYL,Technology
+PLTR,Technology
+FICO,Technology
 ADP,Technology
-LRCX,Technology
+FI,Technology
+EPAM,Technology
+PANW,Technology
 NTAP,Technology
+APPF,Technology
+CDNS,Technology
 VST,Utilities
-CEG,Renewable Energy
 AWR,Utilities
+CEG,Renewable Energy
+NEE,Renewable Energy
+ENPH,Renewable Energy
+FSLR,Renewable Energy
+SEDG,Renewable Energy
