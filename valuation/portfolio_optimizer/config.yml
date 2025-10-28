@@ -30,6 +30,7 @@ sector_caps:
 turnover_cap: 0.25          # slightly looser if you want faster moves
 te_annual_target: 0.06
 te_upper_mult: null
+te_benchmark_mode: equal_weight_active
 
 # Dividend floor
 dividend_income_target_abs: 5000.0

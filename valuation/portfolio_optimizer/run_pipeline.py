@@ -392,12 +392,46 @@ def main():
         ub = max(rc.max_weight, lb)
         per_asset_bounds["NVDA"] = (lb, ub)
 
-    # TE benchmark respecting sleeves
+    # TE benchmark respecting sleeves — configurable modes
     sum_sleeves_present = sum(fixed_in_universe.values())
+    active_budget = max(0.0, 1.0 - sum_sleeves_present)
+
+    te_mode = (cfg.get("te_benchmark_mode") or "sleeves_only").lower()
+
     bench_w = pd.Series(0.0, index=tickers, dtype=float)
+    # sleeves always pinned in the TE benchmark
     for k, v in fixed_in_universe.items():
         bench_w.loc[k] = v
-    # active names benchmark at 0 -> TE won't push equal weight into every active name
+
+    if te_mode == "sleeves_only":
+        # current behavior: benchmark gives 0 weight to all active names
+        pass
+
+    elif te_mode == "equal_weight_active":
+        # spread the active budget equally across all non-sleeve names
+        act = [t for t in tickers if t not in fixed_in_universe]
+        if act and active_budget > 0:
+            bench_w.loc[act] = active_budget / len(act)
+
+    elif te_mode == "holdings" and (holdings is not None) and holdings.sum() > 0:
+        # use your current holdings as the TE benchmark
+        bench_w = holdings.reindex(tickers).fillna(0.0)
+
+    elif te_mode == "sector_targets":
+        # distribute active budget by sector_targets in config, equal-weight within each sector
+        st_cfg = (cfg.get("sector_targets") or {})
+        tot = float(sum(st_cfg.values()))
+        if tot > 0 and active_budget > 0:
+            for sec, w_sec in st_cfg.items():
+                sec_w = active_budget * (float(w_sec) / tot)
+                names = [t for t in tickers if (t not in fixed_in_universe) and sectors.get(t) == sec]
+                if names and sec_w > 0:
+                    bench_w.loc[names] = sec_w / len(names)
+    else:
+        print(f"[info] te_benchmark_mode='{te_mode}' not recognized; using sleeves_only.")
+
+    print(f"[diag] TE benchmark mode: {te_mode}; sleeves={sum_sleeves_present:.2%}, "
+          f"active_bench_sum={(bench_w.sum()-sum_sleeves_present):.2%}")
 
     # Desired sector totals (absolute) → soft targets + hard caps on the active book
     desired_sector_targets = {

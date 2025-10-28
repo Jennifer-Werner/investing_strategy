@@ -86,7 +86,7 @@ def _clean_index(s: pd.Index) -> pd.Index:
     return pd.Index(x.strip().upper() for x in s.astype(str))
 
 def _align(w: pd.Series, mu: pd.Series, cov: pd.DataFrame, verbose: bool = True):
-    # normalize/clean ticker keys
+    # normalize/clean tickers
     w.index  = _clean_index(w.index)
     mu.index = _clean_index(mu.index)
     cov.index = _clean_index(cov.index)
@@ -388,6 +388,8 @@ def main():
     ap.add_argument("--returns_cache", default="outputs/port_daily_returns.parquet",
                     help="(optional) Strategy daily returns for realized KPI")
     ap.add_argument("--top_n", type=int, default=20, help="Rows to show in Top holdings table")
+    ap.add_argument("--invested_cutoff", type=float, default=1e-4,
+                    help="Only count/show assets with weight > this (default 0.01%).")
     args = ap.parse_args()
 
     # Load & align
@@ -412,19 +414,12 @@ def main():
     # Annualize covariance if needed
     cov_annual = cov * (252.0 if args.cov_is_daily else 1.0)
 
-    # Contributions & risk
+    # Contributions & risk (math on full aligned set)
     contrib_ret = w * mu                         # decimals (annual)
     port_mu = float(contrib_ret.sum())          # decimal expected return
     port_vol, mcr, rc, asset_vol = _risk_contributions(w, cov_annual)
-    labels = _labels(contrib_ret, rc)
 
-    # Also compute realized (if returns cache is present)
-    realized_ann = None
-    r_cache = _read_returns_cache(args.returns_cache)
-    if r_cache is not None and not r_cache.empty:
-        realized_ann = _ann_return(r_cache)
-
-    # Master table
+    # Build master df (full aligned)
     df = pd.concat([
         sectors.rename("sector"),
         w.rename("weight"),
@@ -436,10 +431,23 @@ def main():
     ], axis=1)
     rc_sum = df["risk_contrib"].sum()
     df["risk_contrib_pct"] = df["risk_contrib"] / (rc_sum if abs(rc_sum) > 0 else 1.0)
+
+    # Labels on full df (but we'll display invested subset)
+    labels = _labels(df["contrib_return"], df["risk_contrib"])
     df["label"] = labels
 
-    # Sector rollup
-    by_sector = df.groupby("sector").agg(
+    # ---------- Invested filtering for display ----------
+    INV_CUT = float(args.invested_cutoff)  # e.g., 1e-4 => 0.01%
+    invested_mask = df["weight"] > INV_CUT
+    n_invested = int(invested_mask.sum())
+
+    df_invested = df.loc[invested_mask].copy()
+    # For charts that want weights summing to 1 visually
+    w_invested = df_invested["weight"]
+    w_display = (w_invested / w_invested.sum()) if w_invested.sum() > 0 else w_invested
+
+    # Sector rollup (invested only)
+    by_sector = df_invested.groupby("sector").agg(
         weight=("weight","sum"),
         contrib_return=("contrib_return","sum"),
         risk_contrib=("risk_contrib","sum"),
@@ -448,9 +456,9 @@ def main():
     rc_sec_sum = by_sector["risk_contrib"].sum()
     by_sector["risk_contrib_pct"] = by_sector["risk_contrib"] / (rc_sec_sum if abs(rc_sec_sum) > 0 else 1.0)
 
-    # Top holdings table (hide tiny weights)
-    min_display_weight = 1e-4  # 0.01% cutoff for display
-    top_holdings = df[df["weight"] >= min_display_weight] \
+    # Top holdings table (invested only; hide tiny weights)
+    min_display_weight = INV_CUT
+    top_holdings = df_invested[df_invested["weight"] >= min_display_weight] \
         .sort_values("weight", ascending=False)[
             ["sector","weight","mu_annual","contrib_return","risk_contrib_pct","label"]
         ] \
@@ -460,26 +468,33 @@ def main():
             "risk_contrib_pct":"risk contrib %"
         })
 
-    # Build charts (each -> base64)
+    # Build charts (each -> base64); asset charts use invested subset, sleeves chart uses full w
     panels: list[tuple[str,str]] = []
-    panels.append(("Weights (Assets)", _pie_assets(w)))
+    panels.append(("Weights (Assets)", _pie_assets(w_display)))
     panels.append(("Weights (Sectors)", _pie_sectors(by_sector)))
     panels.append(("Sector Weights", _bar_pct(by_sector["weight"], "Sector Weights", "Percent")))
     panels.append(("Sector Return Contributions", _bar_pct(by_sector["contrib_return"], "Expected Return Contribution by Sector", "Percent")))
     panels.append(("Sector Risk Contributions", _bar_pct(by_sector["risk_contrib_pct"], "Risk Contribution by Sector", "Percent")))
-    panels.append(("Asset Return Contributions", _bar_pct(df["contrib_return"], "Expected Return Contribution by Asset", "Percent")))
-    panels.append(("Asset Risk Contributions", _bar_pct(df["risk_contrib_pct"], "Risk Contribution by Asset", "Percent")))
-    panels.append(("Return vs Risk (Assets)", _scatter(df["contrib_return"]*100.0, df["risk_contrib_pct"]*100.0,
+    panels.append(("Asset Return Contributions", _bar_pct(df_invested["contrib_return"], "Expected Return Contribution by Asset", "Percent")))
+    panels.append(("Asset Risk Contributions", _bar_pct(df_invested["risk_contrib_pct"], "Risk Contribution by Asset", "Percent")))
+    panels.append(("Return vs Risk (Assets)", _scatter(df_invested["contrib_return"]*100.0, df_invested["risk_contrib_pct"]*100.0,
                         "Return vs Risk Contribution (Assets)", "Return Contribution (%)", "Risk Contribution (%)")))
-    panels.append(("Labels Distribution", _label_counts(labels)))
-    panels.append(("Sleeves vs Active", _sleeves_vs_active(w)))
+    panels.append(("Labels Distribution", _label_counts(df_invested["label"])))
+    panels.append(("Sleeves vs Active", _sleeves_vs_active(w)))  # full portfolio view
 
-    # KPIs (as percent)
+    # Also compute realized (if returns cache is present)
+    realized_ann = None
+    r_cache = _read_returns_cache(args.returns_cache)
+    if r_cache is not None and not r_cache.empty:
+        realized_ann = _ann_return(r_cache)
+
+    # KPIs (as percent) — invested counts + aligned universe size
     kpis = {
         "Expected Return (Model, annual)": f"{port_mu:.2%}",
         "Volatility (annual)": f"{port_vol:.2%}",
-        "Assets": f"{len(df)}",
-        "Sectors": f"{df['sector'].nunique()}",
+        "Invested Assets": f"{n_invested}",
+        "Universe (aligned)": f"{len(df)}",
+        "Sectors (invested)": f"{df_invested['sector'].nunique()}",
     }
     if realized_ann is not None and np.isfinite(realized_ann):
         kpis["Realized Return (Backtest, annual)"] = f"{realized_ann:.2%}"
@@ -507,7 +522,9 @@ def main():
             "port_vol_decimal": port_vol,
             "mu_is_annual": bool(args.mu_is_annual),
             "has_returns_cache": bool(r_cache is not None and not r_cache.empty),
-            "realized_ann": realized_ann
+            "realized_ann": realized_ann,
+            "invested_cutoff": float(args.invested_cutoff),
+            "invested_count": int(n_invested)
         }
     }, indent=2))
 
