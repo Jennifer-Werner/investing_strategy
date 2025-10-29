@@ -5,33 +5,78 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6a9a0844-99e1-4027-871e-1f71072e507c" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/portfolio_optimizer/outputs/portfolio_summary.xlsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prescreening/output/sp1500_factor_quality_evaluated_20_10_25.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/prescreening/output/sp1500_factor_quality_evaluated_20_10_25.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prescreening/output/sp1500_factor_quality_evaluated_25_10_25.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/prescreening/output/~$sp1500_factor_quality_evaluated_25_10_25.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/comprehensive-analysis/output/sheets/Comprehensive_Valuation_Report_Normalized copy.xlsx" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/valuation/comprehensive-analysis/output/sheets/~$Comprehensive_Valuation_Report_Normalized.xlsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/portfolio_optimizer/config.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/contrib_return_vs_risk_contrib.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/contrib_return_vs_risk_contrib.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/cov_for_mc.csv" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/cov_for_mc.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/drawdowns.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/drawdowns.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/equity_curve.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/equity_curve.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/eqw_daily_returns.parquet" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/eqw_daily_returns.parquet" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/metrics.json" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/metrics.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/monte_carlo_projection.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/monte_carlo_projection.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/monte_carlo_summary.json" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/monte_carlo_summary.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/mu_bl.csv" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/mu_bl.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/port_daily_returns.parquet" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/port_daily_returns.parquet" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/portfolio_dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/portfolio_dashboard.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/portfolio_dashboard.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/portfolio_dashboard.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/portfolio_summary.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/portfolio_summary.xlsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/prices_used.parquet" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/prices_used.parquet" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/report.json" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/report.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/return_hist.png" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/return_hist.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/sector_breakdown.csv" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/sector_breakdown.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/trades.parquet" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/trades.parquet" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/weights.parquet" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/weights.parquet" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/weights_latest.csv" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/weights_latest.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/weights_latest_full.csv" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/weights_latest_full.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/portfolio_viz.py" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/portfolio_optimizer/portfolio_viz.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/run_pipeline.py" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/portfolio_optimizer/run_pipeline.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/scripts/make_dashboard.py" beforeDir="false" afterPath="$PROJECT_DIR$/valuation/portfolio_optimizer/scripts/make_dashboard.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/portfolio_optimizer/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/portfolio_optimizer/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/backtest.py" beforeDir="false" afterPath="$PROJECT_DIR$/portfolio_optimizer/backtest.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/bl.py" beforeDir="false" afterPath="$PROJECT_DIR$/portfolio_optimizer/bl.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/portfolio_optimizer/config.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/data.py" beforeDir="false" afterPath="$PROJECT_DIR$/portfolio_optimizer/data.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/data/factor_exposures.csv" beforeDir="false" afterPath="$PROJECT_DIR$/portfolio_optimizer/data/factor_exposures.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/data/holdings.csv" beforeDir="false" afterPath="$PROJECT_DIR$/portfolio_optimizer/data/holdings.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/data/scores.csv" beforeDir="false" afterPath="$PROJECT_DIR$/portfolio_optimizer/data/scores.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/data/universe.csv" beforeDir="false" afterPath="$PROJECT_DIR$/portfolio_optimizer/data/universe.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/factor_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/portfolio_optimizer/factor_model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/mc_projector.py" beforeDir="false" afterPath="$PROJECT_DIR$/portfolio_optimizer/mc_projector.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/metrics.py" beforeDir="false" afterPath="$PROJECT_DIR$/portfolio_optimizer/metrics.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/normalize_holdings.py" beforeDir="false" afterPath="$PROJECT_DIR$/portfolio_optimizer/normalize_holdings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/optimizer.py" beforeDir="false" afterPath="$PROJECT_DIR$/portfolio_optimizer/optimizer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/output/dividend_yields.csv" beforeDir="false" afterPath="$PROJECT_DIR$/portfolio_optimizer/output/dividend_yields.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/output/metrics.json" beforeDir="false" afterPath="$PROJECT_DIR$/portfolio_optimizer/output/metrics.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/output/trades.parquet" beforeDir="false" afterPath="$PROJECT_DIR$/portfolio_optimizer/output/trades.parquet" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/output/weights.parquet" beforeDir="false" afterPath="$PROJECT_DIR$/portfolio_optimizer/output/weights.parquet" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/asset_expected_returns.csv" beforeDir="false" afterPath="$PROJECT_DIR$/portfolio_optimizer/outputs/asset_expected_returns.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/asset_expected_returns_pretty.csv" beforeDir="false" afterPath="$PROJECT_DIR$/portfolio_optimizer/outputs/asset_expected_returns_pretty.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/asset_return_contribs.png" beforeDir="false" afterPath="$PROJECT_DIR$/portfolio_optimizer/outputs/asset_return_contribs.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/asset_risk_contribs.png" beforeDir="false" afterPath="$PROJECT_DIR$/portfolio_optimizer/outputs/asset_risk_contribs.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/contrib_return_vs_risk_contrib.png" beforeDir="false" afterPath="$PROJECT_DIR$/portfolio_optimizer/outputs/contrib_return_vs_risk_contrib.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/cov_for_mc.csv" beforeDir="false" afterPath="$PROJECT_DIR$/portfolio_optimizer/outputs/cov_for_mc.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/dividend_yields.csv" beforeDir="false" afterPath="$PROJECT_DIR$/portfolio_optimizer/outputs/dividend_yields.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/drawdowns.png" beforeDir="false" afterPath="$PROJECT_DIR$/portfolio_optimizer/outputs/drawdowns.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/equity_curve.png" beforeDir="false" afterPath="$PROJECT_DIR$/portfolio_optimizer/outputs/equity_curve.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/eqw_daily_returns.parquet" beforeDir="false" afterPath="$PROJECT_DIR$/portfolio_optimizer/outputs/eqw_daily_returns.parquet" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/mc_projection.png" beforeDir="false" afterPath="$PROJECT_DIR$/portfolio_optimizer/outputs/mc_projection.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/mc_smoke.json" beforeDir="false" afterPath="$PROJECT_DIR$/portfolio_optimizer/outputs/mc_smoke.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/mc_smoke.png" beforeDir="false" afterPath="$PROJECT_DIR$/portfolio_optimizer/outputs/mc_smoke.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/metrics.json" beforeDir="false" afterPath="$PROJECT_DIR$/portfolio_optimizer/outputs/metrics.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/monte_carlo_projection.png" beforeDir="false" afterPath="$PROJECT_DIR$/portfolio_optimizer/outputs/monte_carlo_projection.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/monte_carlo_summary.json" beforeDir="false" afterPath="$PROJECT_DIR$/portfolio_optimizer/outputs/monte_carlo_summary.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/mu_bl.csv" beforeDir="false" afterPath="$PROJECT_DIR$/portfolio_optimizer/outputs/mu_bl.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/port_daily_returns.parquet" beforeDir="false" afterPath="$PROJECT_DIR$/portfolio_optimizer/outputs/port_daily_returns.parquet" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/portfolio_breakdown.csv" beforeDir="false" afterPath="$PROJECT_DIR$/portfolio_optimizer/outputs/portfolio_breakdown.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/portfolio_dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/portfolio_optimizer/outputs/portfolio_dashboard.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/portfolio_dashboard.png" beforeDir="false" afterPath="$PROJECT_DIR$/portfolio_optimizer/outputs/portfolio_dashboard.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/portfolio_summary.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/prices_used.parquet" beforeDir="false" afterPath="$PROJECT_DIR$/portfolio_optimizer/outputs/prices_used.parquet" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/report.json" beforeDir="false" afterPath="$PROJECT_DIR$/portfolio_optimizer/outputs/report.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/return_contribs.png" beforeDir="false" afterPath="$PROJECT_DIR$/portfolio_optimizer/outputs/return_contribs.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/return_hist.png" beforeDir="false" afterPath="$PROJECT_DIR$/portfolio_optimizer/outputs/return_hist.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/risk_contribs.png" beforeDir="false" afterPath="$PROJECT_DIR$/portfolio_optimizer/outputs/risk_contribs.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/sector_breakdown.csv" beforeDir="false" afterPath="$PROJECT_DIR$/portfolio_optimizer/outputs/sector_breakdown.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/trades.parquet" beforeDir="false" afterPath="$PROJECT_DIR$/portfolio_optimizer/outputs/trades.parquet" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/weights.parquet" beforeDir="false" afterPath="$PROJECT_DIR$/portfolio_optimizer/outputs/weights.parquet" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/weights_latest.csv" beforeDir="false" afterPath="$PROJECT_DIR$/portfolio_optimizer/outputs/weights_latest.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/weights_latest_full.csv" beforeDir="false" afterPath="$PROJECT_DIR$/portfolio_optimizer/outputs/weights_latest_full.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/weights_pie.png" beforeDir="false" afterPath="$PROJECT_DIR$/portfolio_optimizer/outputs/weights_pie.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/outputs/~$portfolio_summary.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/portfolio_optimizer/outputs/~$portfolio_summary.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/portfolio_viz.py" beforeDir="false" afterPath="$PROJECT_DIR$/portfolio_optimizer/portfolio_viz.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/report.py" beforeDir="false" afterPath="$PROJECT_DIR$/portfolio_optimizer/report.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/returns.py" beforeDir="false" afterPath="$PROJECT_DIR$/portfolio_optimizer/returns.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/risk.py" beforeDir="false" afterPath="$PROJECT_DIR$/portfolio_optimizer/risk.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/run_pipeline.py" beforeDir="false" afterPath="$PROJECT_DIR$/portfolio_optimizer/run_pipeline.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/scripts/debug_expected_return.py" beforeDir="false" afterPath="$PROJECT_DIR$/portfolio_optimizer/scripts/debug_expected_return.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/scripts/diagnose.py" beforeDir="false" afterPath="$PROJECT_DIR$/portfolio_optimizer/scripts/diagnose.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/scripts/make_dashboard.py" beforeDir="false" afterPath="$PROJECT_DIR$/portfolio_optimizer/scripts/make_dashboard.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/scripts/perf_dive.py" beforeDir="false" afterPath="$PROJECT_DIR$/portfolio_optimizer/scripts/perf_dive.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/scripts/quick_diagnose.py" beforeDir="false" afterPath="$PROJECT_DIR$/portfolio_optimizer/scripts/quick_diagnose.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/sectors.yml" beforeDir="false" afterPath="$PROJECT_DIR$/portfolio_optimizer/sectors.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/valuation/portfolio_optimizer/views.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/portfolio_optimizer/views.yaml" afterDir="false" />
     </list>
     <list id="e47ba2e3-2fee-400f-a637-22c41a4a8523" name="fixed-outputs-2" comment="" />
     <list id="e0730e18-5657-4513-be23-94c0784ac77b" name="input-changes" comment="" />
@@ -78,11 +123,11 @@
       <recent name="$PROJECT_DIR$" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/" />
       <recent name="$PROJECT_DIR$/valuation/portfolio_optimizer" />
       <recent name="$PROJECT_DIR$/etfs" />
       <recent name="$PROJECT_DIR$/valuation/risk-models/" />
       <recent name="$PROJECT_DIR$/valuation/output/images/app" />
-      <recent name="$PROJECT_DIR$/valuation/output/sheets/" />
     </key>
   </component>
   <component name="RunManager" selected="Python.comprehensive_analysis">
